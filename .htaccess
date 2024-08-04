@@ -1,0 +1,8 @@
+# Enable URL rewriting
+RewriteEngine On
+# Define the base URL (adjust this to match your project's base URL)
+RewriteBase /ChatSphere/ChatSphere_api/
+# Redirect requests to index.php
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^(.*)$ api.php [QSA,L]
