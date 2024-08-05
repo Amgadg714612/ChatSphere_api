@@ -9,9 +9,10 @@ require_once 'middleware/RateLimitMiddleware.php';
 
 class UserController {
     private $userService;
-
+    private $tokenService; 
     public function __construct() {
         $this->userService = new UserService(new User());
+        $this->tokenService = new TokenService(); 
     }
 
     /**
@@ -67,7 +68,6 @@ class UserController {
      */
     private function createUser() {
         $data = json_decode(file_get_contents('php://input'), true);
-
         $errors = [];
         if (!Validator::validateUsername($data['username'] ?? '')) {
             $errors['username'] = 'Invalid username';
@@ -78,13 +78,12 @@ class UserController {
         if (!Validator::validatePassword($data['password'] ?? '')) {
             $errors['password'] = 'Invalid password';
         }
-
         if (!empty($errors)) {
             echo ResponseFormatter::validationError($errors);
             return;
         }
-
-        $user = $this->userService->createUser($data);
+        $user = $this->userService->registerUser($data['username'],$data['password'] ,$data['email'] );
+       // $user = $this->userService->createUser($data);
         if ($user) {
             echo ResponseFormatter::success($user, 'User created successfully');
         } else {
@@ -150,6 +149,62 @@ class UserController {
             echo ResponseFormatter::success(null, 'User deleted successfully');
         } else {
             echo ResponseFormatter::error('Failed to delete user', 500);
+        }
+    }
+    public function Signup($username, $email, $password) {
+        // التحقق من صحة البيانات
+        $errors = [];
+        if (!Validator::validateUsername($username)) {
+            $errors['username'] = 'Invalid username';
+        }
+        if (!Validator::validateEmail($email)) {
+            $errors['email'] = 'Invalid email';
+        }
+        if (!Validator::validatePassword($password)) {
+            $errors['password'] = 'Invalid password" Password must be at least 8 characters long and include at least one uppercase letter, one lowercase letter, and one number.';
+        }
+        if (!empty($errors)) {
+            return ResponseFormatter::validationError($errors);
+        }
+        // التحقق من وجود المستخدم بالفعل
+        $existingUser = $this->userService->getUserByUsername($username);
+        if ($existingUser) {
+            return ResponseFormatter::error('Username already exists', 400);
+        }
+        // إنشاء المستخدم
+        $hashedPassword = password_hash($password, PASSWORD_BCRYPT);
+        $userId = $this->userService->createUser([
+            'username' => $username,
+            'email' => $email,
+            'password' => $hashedPassword
+        ]);
+        if ($userId) {
+            // إنشاء التوكن
+            $token = $this->tokenService->createToken($userId);
+            return ResponseFormatter::success(['user_id' => $userId, 'token' => $token], 'User registered successfully');
+        } else {
+            return ResponseFormatter::error('Failed to register user', 500);
+        }
+    }
+    public function login() {
+        $data = json_decode(file_get_contents('php://input'), true);
+        $email = $data['email'] ?? null;
+        $password = $data['password'] ?? null;
+        if (!$email || !$password) {
+            echo ResponseFormatter::error('Email and password are required', 400);
+            return;
+        }
+        $user = $this->userService->getUserByEmail($email);
+        if (!$user) {
+            echo ResponseFormatter::error('Invalid email or password', 401);
+            return;
+        }
+        if (password_verify($password, $user['password'])) {
+            // Create a token for the user
+            $token = $this->tokenService->updateToken($user['id']);
+            return ResponseFormatter::success(['token' => $token], 'Login successful');
+        } else {
+            echo ResponseFormatter::error('Invalid email or password', 401);
         }
     }
 }

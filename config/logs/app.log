@@ -1,0 +1,137 @@
+[2024-08-05 12:45:39] [ERROR] Unauthorized access attempt
+[2024-08-05 12:45:40] [ERROR] Unauthorized access attempt
+[2024-08-05 12:45:40] [ERROR] Unauthorized access attempt
+[2024-08-05 13:56:56] [ERROR] Unauthorized access attempt
+[2024-08-05 13:56:56] [ERROR] Unauthorized access attempt
+[2024-08-05 18:15:59] [ERROR] Unauthorized access attempt
+[2024-08-05 18:15:59] [ERROR] Unauthorized access attempt
+[2024-08-05 18:17:16] [ERROR] Unauthorized access attempt
+[2024-08-05 18:17:16] [ERROR] Unauthorized access attempt
+[2024-08-05 18:17:17] [ERROR] Unauthorized access attempt
+[2024-08-05 18:17:17] [ERROR] Unauthorized access attempt
+[2024-08-05 18:17:19] [ERROR] Unauthorized access attempt
+[2024-08-05 18:17:19] [ERROR] Unauthorized access attempt
+[2024-08-05 18:17:20] [ERROR] Unauthorized access attempt
+[2024-08-05 18:17:20] [ERROR] Unauthorized access attempt
+[2024-08-05 18:17:21] [ERROR] Unauthorized access attempt
+[2024-08-05 18:17:21] [ERROR] Unauthorized access attempt
+[2024-08-05 18:21:29] [ERROR] Unauthorized access attempt
+[2024-08-05 18:21:29] [ERROR] Unauthorized access attempt
+[2024-08-05 18:21:30] [ERROR] Unauthorized access attempt
+[2024-08-05 18:21:30] [ERROR] Unauthorized access attempt
+[2024-08-05 18:45:09] [WARNING] User creation failed due to validation errors: {"password":"Invalid password"}
+[2024-08-05 18:45:09] [WARNING] User creation failed due to validation errors: {"password":"Invalid password"}
+[2024-08-05 18:52:43] [WARNING] User creation failed due to validation errors: {"password":"Invalid password"}
+[2024-08-05 18:52:43] [WARNING] User creation failed due to validation errors: {"password":"Invalid password"}
+[2024-08-05 18:54:15] [ERROR] Unauthorized access attempt
+[2024-08-05 18:54:15] [ERROR] Unauthorized access attempt
+[2024-08-05 18:54:16] [ERROR] Unauthorized access attempt
+[2024-08-05 18:54:16] [ERROR] Unauthorized access attempt
+[2024-08-05 18:54:19] [WARNING] User creation failed due to validation errors: {"password":"Invalid password"}
+[2024-08-05 18:54:19] [WARNING] User creation failed due to validation errors: {"password":"Invalid password"}
+[2024-08-05 19:02:22] [WARNING] User creation failed due to validation errors: {"password":"Invalid password"}
+[2024-08-05 19:02:22] [WARNING] User creation failed due to validation errors: {"password":"Invalid password"}
+[2024-08-05 19:12:26] [WARNING] User creation failed due to validation errors: {"password":"Invalid password"}
+[2024-08-05 19:12:26] [WARNING] User creation failed due to validation errors: {"password":"Invalid password"}
+[2024-08-05 19:13:26] [WARNING] User creation failed due to validation errors: {"password":"Invalid password"}
+[2024-08-05 19:13:26] [WARNING] User creation failed due to validation errors: {"password":"Invalid password"}
+[2024-08-05 19:13:27] [WARNING] User creation failed due to validation errors: {"password":"Invalid password"}
+[2024-08-05 19:13:27] [WARNING] User creation failed due to validation errors: {"password":"Invalid password"}
+[2024-08-05 19:13:28] [WARNING] User creation failed due to validation errors: {"password":"Invalid password"}
+[2024-08-05 19:13:28] [WARNING] User creation failed due to validation errors: {"password":"Invalid password"}
+[2024-08-05 19:13:29] [WARNING] User creation failed due to validation errors: {"password":"Invalid password"}
+[2024-08-05 19:13:29] [WARNING] User creation failed due to validation errors: {"password":"Invalid password"}
+[2024-08-05 19:14:00] [WARNING] User creation failed due to validation errors: {"password":"Invalid password"}
+[2024-08-05 19:14:00] [WARNING] User creation failed due to validation errors: {"password":"Invalid password"}
+[2024-08-05 19:19:24] [WARNING] User creation failed due to validation errors: {"password":"Invalid password"}
+[2024-08-05 19:19:24] [WARNING] User creation failed due to validation errors: {"password":"Invalid password"}
+[2024-08-05 19:19:26] [WARNING] User creation failed due to validation errors: {"password":"Invalid password"}
+[2024-08-05 19:19:26] [WARNING] User creation failed due to validation errors: {"password":"Invalid password"}
+[2024-08-05 19:19:29] [WARNING] User creation failed due to validation errors: {"password":"Invalid password"}
+[2024-08-05 19:19:29] [WARNING] User creation failed due to validation errors: {"password":"Invalid password"}
+[2024-08-05 19:19:30] [WARNING] User creation failed due to validation errors: {"password":"Invalid password"}
+[2024-08-05 19:19:30] [WARNING] User creation failed due to validation errors: {"password":"Invalid password"}
+[2024-08-05 19:19:45] [WARNING] User creation failed due to validation errors: {"password":"Invalid password"}
+[2024-08-05 19:19:45] [WARNING] User creation failed due to validation errors: {"password":"Invalid password"}
+[2024-08-05 19:20:35] [WARNING] User creation failed due to validation errors: {"password":"Invalid password"}
+[2024-08-05 19:20:35] [WARNING] User creation failed due to validation errors: {"password":"Invalid password"}
+[2024-08-05 19:20:36] [WARNING] User creation failed due to validation errors: {"password":"Invalid password"}
+[2024-08-05 19:20:36] [WARNING] User creation failed due to validation errors: {"password":"Invalid password"}
+[2024-08-05 19:21:06] [WARNING] User creation failed due to validation errors: {"password":"Invalid password"}
+[2024-08-05 19:21:06] [WARNING] User creation failed due to validation errors: {"password":"Invalid password"}
+[2024-08-05 19:21:07] [WARNING] User creation failed due to validation errors: {"password":"Invalid password"}
+[2024-08-05 19:21:07] [WARNING] User creation failed due to validation errors: {"password":"Invalid password"}
+[2024-08-05 19:21:07] [WARNING] User creation failed due to validation errors: {"password":"Invalid password"}
+[2024-08-05 19:21:07] [WARNING] User creation failed due to validation errors: {"password":"Invalid password"}
+[2024-08-05 19:25:17] [WARNING] User creation failed due to validation errors: {"password":"Invalid password"}
+[2024-08-05 19:25:17] [WARNING] User creation failed due to validation errors: {"password":"Invalid password"}
+[2024-08-05 19:25:18] [WARNING] User creation failed due to validation errors: {"password":"Invalid password"}
+[2024-08-05 19:25:18] [WARNING] User creation failed due to validation errors: {"password":"Invalid password"}
+[2024-08-05 19:25:56] [WARNING] User creation failed due to validation errors: {"password":"Invalid password"}
+[2024-08-05 19:25:56] [WARNING] User creation failed due to validation errors: {"password":"Invalid password"}
+[2024-08-05 19:25:57] [WARNING] User creation failed due to validation errors: {"password":"Invalid password"}
+[2024-08-05 19:25:57] [WARNING] User creation failed due to validation errors: {"password":"Invalid password"}
+[2024-08-05 19:26:59] [WARNING] User creation failed due to validation errors: {"password":"Invalid password"}
+[2024-08-05 19:26:59] [WARNING] User creation failed due to validation errors: {"password":"Invalid password"}
+[2024-08-05 19:27:27] [WARNING] User creation failed due to validation errors: {"password":"Invalid password"}
+[2024-08-05 19:27:27] [WARNING] User creation failed due to validation errors: {"password":"Invalid password"}
+[2024-08-05 19:27:28] [WARNING] User creation failed due to validation errors: {"password":"Invalid password"}
+[2024-08-05 19:27:28] [WARNING] User creation failed due to validation errors: {"password":"Invalid password"}
+[2024-08-05 19:27:29] [WARNING] User creation failed due to validation errors: {"password":"Invalid password"}
+[2024-08-05 19:27:29] [WARNING] User creation failed due to validation errors: {"password":"Invalid password"}
+[2024-08-05 19:28:06] [WARNING] User creation failed due to validation errors: {"password":"Invalid password"}
+[2024-08-05 19:28:06] [WARNING] User creation failed due to validation errors: {"password":"Invalid password"}
+[2024-08-05 19:28:41] [WARNING] User creation failed due to validation errors: {"password":"Invalid password"}
+[2024-08-05 19:28:41] [WARNING] User creation failed due to validation errors: {"password":"Invalid password"}
+[2024-08-05 19:30:14] [WARNING] User creation failed due to validation errors: {"password":"Invalid password"}
+[2024-08-05 19:30:14] [WARNING] User creation failed due to validation errors: {"password":"Invalid password"}
+[2024-08-05 19:30:15] [WARNING] User creation failed due to validation errors: {"password":"Invalid password"}
+[2024-08-05 19:30:15] [WARNING] User creation failed due to validation errors: {"password":"Invalid password"}
+[2024-08-05 19:30:16] [WARNING] User creation failed due to validation errors: {"password":"Invalid password"}
+[2024-08-05 19:30:16] [WARNING] User creation failed due to validation errors: {"password":"Invalid password"}
+[2024-08-05 19:30:17] [WARNING] User creation failed due to validation errors: {"password":"Invalid password"}
+[2024-08-05 19:30:17] [WARNING] User creation failed due to validation errors: {"password":"Invalid password"}
+[2024-08-05 19:30:30] [WARNING] User creation failed due to validation errors: {"password":"Invalid password"}
+[2024-08-05 19:30:30] [WARNING] User creation failed due to validation errors: {"password":"Invalid password"}
+[2024-08-05 19:30:31] [WARNING] User creation failed due to validation errors: {"password":"Invalid password"}
+[2024-08-05 19:30:31] [WARNING] User creation failed due to validation errors: {"password":"Invalid password"}
+[2024-08-05 19:30:52] [WARNING] User creation failed due to validation errors: {"password":"Invalid password"}
+[2024-08-05 19:30:52] [WARNING] User creation failed due to validation errors: {"password":"Invalid password"}
+[2024-08-05 19:31:24] [WARNING] User creation failed due to validation errors: {"password":"Invalid password"}
+[2024-08-05 19:31:24] [WARNING] User creation failed due to validation errors: {"password":"Invalid password"}
+[2024-08-05 19:31:48] [WARNING] User creation failed due to validation errors: {"password":"Invalid password"}
+[2024-08-05 19:31:48] [WARNING] User creation failed due to validation errors: {"password":"Invalid password"}
+[2024-08-05 19:31:49] [WARNING] User creation failed due to validation errors: {"password":"Invalid password"}
+[2024-08-05 19:31:49] [WARNING] User creation failed due to validation errors: {"password":"Invalid password"}
+[2024-08-05 19:31:55] [WARNING] User creation failed due to validation errors: {"password":"Invalid password"}
+[2024-08-05 19:31:55] [WARNING] User creation failed due to validation errors: {"password":"Invalid password"}
+[2024-08-05 19:32:57] [ERROR] Exception occurred while creating user: Error creating user: SQLSTATE[HY093]: Invalid parameter number
+[2024-08-05 19:32:57] [ERROR] Exception occurred while creating user: Error creating user: SQLSTATE[HY093]: Invalid parameter number
+[2024-08-05 19:34:00] [INFO] User created successfully with ID: 1
+[2024-08-05 19:34:00] [INFO] User created successfully with ID: 1
+[2024-08-05 19:39:56] [INFO] User created successfully with ID: 2
+[2024-08-05 19:39:56] [INFO] User created successfully with ID: 2
+[2024-08-05 19:44:53] [INFO] User created successfully with ID: 3
+[2024-08-05 19:44:53] [INFO] User created successfully with ID: 3
+[2024-08-05 19:45:31] [INFO] User created successfully with ID: 4
+[2024-08-05 19:45:31] [INFO] User created successfully with ID: 4
+[2024-08-05 19:46:18] [INFO] User created successfully with ID: 5
+[2024-08-05 19:46:18] [INFO] User created successfully with ID: 5
+[2024-08-05 19:47:08] [INFO] User created successfully with ID: 6
+[2024-08-05 19:47:08] [INFO] User created successfully with ID: 6
+[2024-08-05 19:49:33] [INFO] User created successfully with ID: 7
+[2024-08-05 19:49:33] [INFO] User created successfully with ID: 7
+[2024-08-05 19:49:48] [INFO] User created successfully with ID: 8
+[2024-08-05 19:49:48] [INFO] User created successfully with ID: 8
+[2024-08-05 19:53:43] [INFO] User created successfully with ID: 9
+[2024-08-05 19:53:43] [INFO] User created successfully with ID: 9
+[2024-08-05 19:56:28] [INFO] User created successfully with ID: 10
+[2024-08-05 19:56:28] [INFO] User created successfully with ID: 10
+[2024-08-05 19:58:03] [INFO] User created successfully with ID: 11
+[2024-08-05 19:58:03] [INFO] User created successfully with ID: 11
+[2024-08-05 20:00:02] [INFO] User created successfully with ID: 12
+[2024-08-05 20:00:02] [INFO] User created successfully with ID: 12
+[2024-08-05 20:06:32] [INFO] User created successfully with ID: 13
+[2024-08-05 20:06:32] [INFO] User created successfully with ID: 13
+[2024-08-05 20:06:52] [INFO] User created successfully with ID: 14
+[2024-08-05 20:06:52] [INFO] User created successfully with ID: 14

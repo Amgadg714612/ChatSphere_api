@@ -2,7 +2,6 @@
 
 class Logger {
     private static $logFilePath;
-
     /**
      * Set the path for the log file.
      * 
@@ -54,6 +53,16 @@ class Logger {
         $formattedMessage = "[$date] [$level] $message" . PHP_EOL;
 
         file_put_contents(self::$logFilePath, $formattedMessage, FILE_APPEND);
+        // Ensure the directory exists
+        $logDirectory = dirname(self::$logFilePath);
+        if (!is_dir($logDirectory)) {
+            mkdir($logDirectory, 0777, true);
+        }
+
+        // Write the log message to the file
+        if (file_put_contents(self::$logFilePath, $formattedMessage, FILE_APPEND) === false) {
+            throw new Exception('Failed to write to log file.');
+        }
     }
 }
 ?>

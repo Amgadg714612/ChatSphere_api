@@ -1,14 +1,15 @@
 <?php
 
 require_once 'models/User.php'; // Import the User model
+require_once 'utils/ResponseFormatter.php';
+
 class UserService {
 
     private $userModel;
-
     public function __construct() {
         $this->userModel = new User(); // Initialize the User model
     }
-
+////////////////////////////////////////////////////////////////login user /////////////////////////////////////
     // Authenticate a user by username and password
     public function authenticateUser($username, $password) {
         try {
@@ -23,25 +24,25 @@ class UserService {
         }
     }
  
+    ////////////////////////////////////////////////////////// SignUp//////////////////////////////////////////////
     // Register a new user
     public function registerUser($username, $password, $email) {
         try {
             // Check if the username or email already exists
             if ($this->userModel->getUserByUsername($username) || $this->userModel->getUserByEmail($email)) {
-                throw new Exception('Username or email already exists.');
+              echo  ResponseFormatter::success($username,'Username or email already exists.');
             }
 
             // Hash the password before storing it
             $hashedPassword = password_hash($password, PASSWORD_BCRYPT);
-
             // Create the user
             $userId = $this->userModel->createUser($username, $hashedPassword, $email);
             return $userId; // Return the ID of the newly created user
         } catch (Exception $e) {
-            throw new Exception('Error registering user: ' . $e->getMessage());
+            echo  ResponseFormatter::success($e->getMessage(),'Error registering user: ');
         }
     }
-
+//////////////////////////////////////////////////////////////////////////Update user details////////////////////////////
     // Update user details
     public function updateUser($userId, $username, $email, $password = null) {
         try {
@@ -57,7 +58,7 @@ class UserService {
             throw new Exception('Error updating user: ' . $e->getMessage());
         }
     }
-
+/////////////////////////////////////////////////////////    // Delete a user////////////////////////////
     // Delete a user
     public function deleteUser($userId) {
         try {
@@ -67,15 +68,16 @@ class UserService {
             throw new Exception('Error deleting user: ' . $e->getMessage());
         }
     }
-    public function createUser($data) {
-        // Perform additional business logic or validation
-        $errors = [];
 
+    ///////////////////////////////////
+    public function createUser($data) {
+        // Perform additional business logic or 
+       
+        $errors = [];
         // Validate the username
         if (empty($data['username']) || !Validator::validateUsername($data['username'])) {
             $errors['username'] = 'Invalid username';
         }
-
         // Validate the email
         if (empty($data['email']) || !Validator::validateEmail($data['email'])) {
             $errors['email'] = 'Invalid email';
@@ -85,24 +87,21 @@ class UserService {
                 $errors['email'] = 'Email is already registered';
             }
         }
-
         // Validate the password
-        if (empty($data['password']) || !Validator::validatePassword($data['password'])) {
-            $errors['password'] = 'Invalid password';
-        }
-
+        // if (empty($data['password']) || !Validator::validatePassword($data['password'])) {
+        //     $errors['password'] = 'Invalid password';
+        // }
         // Check if there are any validation errors
         if (!empty($errors)) {
             // Log validation errors
             Logger::warning('User creation failed due to validation errors: ' . json_encode($errors));
             return false;
         }
-
         // Additional business logic can be added here
-
         // Delegate to the User model to perform the actual creation
         try {
-            $userId = $this->userModel->createUser($data['password'],$data['email']);
+         
+            $userId = $this->userModel->createUser($data['username'],$data['email'],$data['password']);
             // Log successful user creation
             Logger::info('User created successfully with ID: ' . $userId);
             return $userId;
@@ -112,13 +111,26 @@ class UserService {
             return false;
         }
     }
-
-
     // Get user details by ID
     public function getUserById($userId) {
         try {
             return $this->userModel->getUserById($userId);
         } catch (Exception $e) {
+            throw new Exception('Error fetching user details: ' . $e->getMessage());
+        }
+    }
+    public function getUserByEmail($email) {
+        try {
+            return $this->userModel->getUserByEmail($email);
+        } catch (Exception $e) {
+            throw new Exception('Error fetching user details: ' . $e->getMessage());
+        }
+    }
+    public function getUserByUserName($username) {
+        try {
+            return $this->userModel->getUserByUserName($username);
+        } catch (Exception $e) {
+        // ResponseFormatter::error('Error fetching user details:s', 1054);
             throw new Exception('Error fetching user details: ' . $e->getMessage());
         }
     }

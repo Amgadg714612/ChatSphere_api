@@ -12,6 +12,7 @@ class GroupController {
 
     public function handleRequest($method, $params = []) {
         switch ($method) {
+
             case 'GET':
                 if (isset($params['id'])) {
                     $this->getGroup($params['id']);
@@ -190,6 +191,35 @@ class GroupController {
             } else {
                 http_response_code(500); // Internal Server Error
                 echo json_encode(['error' => 'Failed to delete group']);
+            }
+        } catch (Exception $e) {
+            http_response_code(500); // Internal Server Error
+            echo json_encode(['error' => $e->getMessage()]);
+        }
+    }
+    public function addMemberToGroup() {
+        if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+            http_response_code(405); // Method Not Allowed
+            echo json_encode(['error' => 'Method not allowed']);
+            return;
+        }
+
+        $data = json_decode(file_get_contents('php://input'), true);
+
+        if (empty($data['groupId']) || empty($data['userId'])) {
+            http_response_code(400); // Bad Request
+            echo json_encode(['error' => 'Group ID and User ID are required']);
+            return;
+        }
+
+        try {
+            $success = $this->groupService->addMemberToGroup($data['groupId'], $data['userId']);
+            if ($success) {
+                http_response_code(200); // OK
+                echo json_encode(['success' => 'Member added to group successfully']);
+            } else {
+                http_response_code(500); // Internal Server Error
+                echo json_encode(['error' => 'Failed to add member to group']);
             }
         } catch (Exception $e) {
             http_response_code(500); // Internal Server Error

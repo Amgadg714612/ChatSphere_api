@@ -4,17 +4,15 @@ require_once 'controllers/UserController.php';
 require_once 'controllers/GroupController.php';
 require_once 'controllers/MessageController.php';
 require_once 'controllers/ConversationController.php';
-
 // Handle the incoming request
 $requestMethod = $_SERVER['REQUEST_METHOD'];
 $requestEndpoint = $_SERVER['REQUEST_URI'];
 
 // Remove any query parameters from the endpoint
 $requestEndpoint = strtok($requestEndpoint, '?');
-
 // Dispatch the request to the appropriate controller
 switch ($requestEndpoint) {
-    case '/chat-api/users':
+    case '/ChatSphere/ChatSphere_api/chat-api/users':
         handleUserRequest($requestMethod);
         break;
     case '/chat-api/groups':
@@ -26,10 +24,17 @@ switch ($requestEndpoint) {
     case '/chat-api/conversations':
         handleConversationRequest($requestMethod);
         break;
+
+    case '/ChatSphere/ChatSphere_api/chat-api/login':
+            handleLoginRequest($requestMethod);
+            break;
+     case '/ChatSphere/ChatSphere_api/chat-api/signup': // New endpoint for signup
+                handleSignupRequest($requestMethod);
+                break;
     default:
         // Handle invalid or unsupported endpoint
         http_response_code(404);
-        echo json_encode(['error' => 'Endpoint not found']);
+        echo json_encode(['error' => 'Endpoint not found main ']);
         break;
 }
 
@@ -81,4 +86,42 @@ function handleConversationRequest($method) {
     $conversationController = new ConversationController($conversationService);
 
     $conversationController->handleRequest($method, $params);
+}
+function handleLoginRequest($method) {
+    if ($method === 'POST') {
+        $data = json_decode(file_get_contents('php://input'), true);
+        if (isset($data['email']) && isset($data['password'])) {
+            $email = $data['email'];
+            $password = $data['password'];
+            $userController = new UserController();
+            $response = $userController->login($email, $password);
+            echo $response;
+        } else {
+            http_response_code(400);
+            echo json_encode(['error' => 'Username and password required not  int ']);
+        }
+    } else {
+        http_response_code(405);
+        echo json_encode(['error' => 'Method Not Allowed']);
+    }
+}
+// Handle signup requests
+function handleSignupRequest($method) {
+    if ($method === 'POST') {
+        $data = json_decode(file_get_contents('php://input'), true);
+        if (isset($data['username']) && isset($data['email']) && isset($data['password'])) {
+            $username = $data['username'];
+            $email = $data['email'];
+            $password = $data['password'];
+            $userController = new UserController();
+            $response = $userController->signup($username, $email, $password);
+            echo $response;
+        } else {
+        
+            echo ResponseFormatter::error('Username, email, and password required', 400);
+        }
+    } else {
+      ;
+        echo ResponseFormatter::error('Method Not Allowed', 405);
+    }
 }

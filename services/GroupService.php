@@ -21,6 +21,7 @@ class GroupService {
         }
     }
 
+
     // Retrieve group details by ID
     public function getGroupById($groupId) {
         try {
@@ -65,5 +66,8 @@ class GroupService {
             // Handle or log the exception
             throw new Exception('Error retrieving group: ' . $e->getMessage());
         }
+    }
+    public function addMemberToGroup($groupId, $userId) {
+        return $this->groupModel->addMemberToGroup($groupId, $userId);
     }
 }

@@ -49,12 +49,13 @@ public function getUserByUsername($username) {
     }
 }
     // Create a new user
-    public function createUser($username, $email) {
+    public function createUser($username, $email,$password) {
         try {
-            $stmt = $this->pdo->prepare("INSERT INTO users (username, email) VALUES (:username, :email)");
+            $stmt = $this->pdo->prepare("INSERT INTO users (username, email, password ) VALUES (:username, :email,:password)");
             $stmt->execute([
                 'username' => $username,
-                'email' => $email
+                'email' => $email,
+                'password' => $password
             ]);
             return $this->pdo->lastInsertId(); // Return the ID of the newly created user
         } catch (PDOException $e) {
