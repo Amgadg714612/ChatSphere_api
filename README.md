@@ -18,3 +18,38 @@
 
 
 
+	http://localhost/ChatSphere/ChatSphere_api/
+
+{"error":"Endpoint not found"}
+
+
+Sign uP 
+http://localhost/ChatSphere/ChatSphere_api/chat-api/signup
+
+{
+    "username": "ssssdssw",
+    "email": "aaaaasssdsssa@example.com",
+    "password": "QQQwea123sd"
+}
+![image](https://github.com/user-attachments/assets/c41b40c0-276f-46a5-908f-bb6c716ba5a8)
+
+
+ ![image](https://github.com/user-attachments/assets/d3de9151-5d0c-4dae-b25c-ef605015dc0a)
+
+
+Login 
+http://localhost/ChatSphere/ChatSphere_api/chat-api/login
+{
+    "email": "aaasdsssa@example.com",
+    "password": "QQQwea123sd"
+}
+
+![image](https://github.com/user-attachments/assets/160cd692-53be-41e2-9357-2b0d854eda00)
+
+
+ ![image](https://github.com/user-attachments/assets/0bfcbdea-3afb-42bc-b9ae-e33275addf8e)
+
+ 
+
+
+
