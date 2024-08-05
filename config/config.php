@@ -2,11 +2,21 @@
 
 require_once 'utils/Logger.php';
 
+
+// $servername =  "https://alwahash.online" ;//"https://alwahash.online
+// $username = "u940853030_adam11";
+// $password = "_4263AdamDB_";
+
+
 // بيانات الاتصال بقاعدة البيانات
+
+
 $host = '127.0.0.1'; // أو عنوان الخادم الخاص بقاعدة البيانات
-$db   = 'chatAPI';  // اسم قاعدة البيانات
 $user = 'root';      // اسم المستخدم لقاعدة البيانات
-$pass = '';          // كلمة مرور قاعدة البيانات
+$pass = '';    // كلمة مرور قاعدة البيانات
+
+//////////////////////////////////////////////////////
+$db   = 'chatAPI';      // اسم قاعدة البيانات
 $charset = 'utf8mb4'; // ترميز الأحرف
 
 $dsn = "mysql:host=$host";
