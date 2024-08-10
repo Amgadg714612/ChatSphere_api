@@ -55,7 +55,7 @@ public function getUserIdByEmail($email) {
         $result = $stmt->fetch(PDO::FETCH_ASSOC);
         return $result ? $result['id'] : false; 
     } catch (PDOException $e) {
-        throw new Exception('Error fetching user by email: ' . $e->getMessage());
+        ResponseFormatter::error('Error fetching user by email: '+$e->getMessage(),1024);
     }
 }
     // Create a new user

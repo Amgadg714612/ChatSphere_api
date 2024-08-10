@@ -48,8 +48,7 @@ class MessageController {
                 break;
             default:
                 http_response_code(405); // Method Not Allowed
-                echo json_encode(['error' => 'Method Not Allowed']);
-        }
+        echo ResponseFormatter::error('Method not allowed',405);        }
     }
     
     public function sendMessage() {

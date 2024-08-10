@@ -105,7 +105,7 @@ CREATE TABLE IF NOT EXISTS user_groups (
     permissions SET('read', 'write', 'admin') DEFAULT 'read',
     idUserMember INT NOT NULL,
     joined_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    PRIMARY KEY (user_id, group_id),
+    PRIMARY KEY (idUserMember, group_id),
     FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
     FOREIGN KEY (group_id) REFERENCES groups(id) ON DELETE CASCADE,
     FOREIGN KEY (idUserMember) REFERENCES users(id)

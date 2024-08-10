@@ -61,6 +61,7 @@ class Token {
  
     public function getUserIdFromToken($token) {
         $stmt = $this->pdo->prepare('SELECT user_id FROM tokens WHERE token = ? AND expires_at > NOW()');
+        // $stmt = $this->pdo->prepare('SELECT user_id FROM tokens WHERE token = ? AND expires_at > NOW()');
         $stmt->execute([$token]);
         $row = $stmt->fetch();
         return $row ? $row['user_id'] : null;
