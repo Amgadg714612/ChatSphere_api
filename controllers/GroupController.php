@@ -77,7 +77,6 @@ class GroupController {
 
         // Get the input data
         $data = json_decode(file_get_contents('php://input'), true);
-
         // Validate input data
         if (empty($data['name']) || empty($data['description'])) {
             http_response_code(400); // Bad Request

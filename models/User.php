@@ -48,6 +48,16 @@ public function getUserByUsername($username) {
         throw new Exception('Error fetching user by email: ' . $e->getMessage());
     }
 }
+public function getUserIdByEmail($email) {
+    try {
+        $stmt = $this->pdo->prepare("SELECT id  FROM users WHERE email = :email");
+        $stmt->execute(['email' => $email]);
+        $result = $stmt->fetch(PDO::FETCH_ASSOC);
+        return $result ? $result['id'] : false; 
+    } catch (PDOException $e) {
+        throw new Exception('Error fetching user by email: ' . $e->getMessage());
+    }
+}
     // Create a new user
     public function createUser($username, $email,$password) {
         try {

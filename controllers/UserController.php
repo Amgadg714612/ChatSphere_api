@@ -7,12 +7,14 @@ require_once 'utils/ResponseFormatter.php';
 require_once 'middleware/AuthMiddleware.php';
 require_once 'middleware/RateLimitMiddleware.php';
 
-class UserController {
+class UserController
+{
     private $userService;
-    private $tokenService; 
-    public function __construct() {
+    private $tokenService;
+    public function __construct()
+    {
         $this->userService = new UserService(new User());
-        $this->tokenService = new TokenService(); 
+        $this->tokenService = new TokenService();
     }
 
     /**
@@ -20,7 +22,8 @@ class UserController {
      * 
      * @param string $method The HTTP method of the request.
      */
-    public function handleRequest($method) {
+    public function handleRequest($method)
+    {
         // Apply rate limiting for all requests
         RateLimitMiddleware::handle();
         // Authenticate the user for all requests
@@ -47,7 +50,8 @@ class UserController {
     /**
      * Handle GET request to retrieve a user.
      */
-    private function getUser() {
+    private function getUser()
+    {
         $id = $_GET['id'] ?? null;
 
         if (!$id) {
@@ -66,7 +70,8 @@ class UserController {
     /**
      * Handle POST request to create a new user.
      */
-    private function createUser() {
+    private function createUser()
+    {
         $data = json_decode(file_get_contents('php://input'), true);
         $errors = [];
         if (!Validator::validateUsername($data['username'] ?? '')) {
@@ -82,8 +87,8 @@ class UserController {
             echo ResponseFormatter::validationError($errors);
             return;
         }
-        $user = $this->userService->registerUser($data['username'],$data['password'] ,$data['email'] );
-       // $user = $this->userService->createUser($data);
+        $user = $this->userService->registerUser($data['username'], $data['password'], $data['email']);
+        // $user = $this->userService->createUser($data);
         if ($user) {
             echo ResponseFormatter::success($user, 'User created successfully');
         } else {
@@ -94,9 +99,9 @@ class UserController {
     /**
      * Handle PUT request to update an existing user.
      */
-    private function updateUser() {
+    private function updateUser()
+    {
         $data = json_decode(file_get_contents('php://input'), true);
-
         $id = $_GET['id'] ?? null;
         if (!$id) {
             echo ResponseFormatter::error('User ID is required', 400);
@@ -125,7 +130,7 @@ class UserController {
             return;
         }
 
-        $updatedUser = $this->userService->updateUser($id, $data['email'],$data['username']);
+        $updatedUser = $this->userService->updateUser($id, $data['email'], $data['username']);
         if ($updatedUser) {
             echo ResponseFormatter::success($updatedUser, 'User updated successfully');
         } else {
@@ -136,7 +141,8 @@ class UserController {
     /**
      * Handle DELETE request to remove a user.
      */
-    private function deleteUser() {
+    private function deleteUser()
+    {
         $id = $_GET['id'] ?? null;
 
         if (!$id) {
@@ -151,7 +157,8 @@ class UserController {
             echo ResponseFormatter::error('Failed to delete user', 500);
         }
     }
-    public function Signup($username, $email, $password) {
+    public function Signup($username, $email, $password)
+    {
         // التحقق من صحة البيانات
         $errors = [];
         if (!Validator::validateUsername($username)) {
@@ -186,7 +193,8 @@ class UserController {
             return ResponseFormatter::error('Failed to register user', 500);
         }
     }
-    public function login() {
+    public function login()
+    {
         $data = json_decode(file_get_contents('php://input'), true);
         $email = $data['email'] ?? null;
         $password = $data['password'] ?? null;
@@ -208,4 +216,3 @@ class UserController {
         }
     }
 }
-?>

@@ -134,4 +134,12 @@ class UserService {
             throw new Exception('Error fetching user details: ' . $e->getMessage());
         }
     }
+    public function getUserIdByUserEmail($email) {
+        try {
+            return $this->userModel-> getUserIdByEmail($email);
+        } catch (Exception $e) {
+        // ResponseFormatter::error('Error fetching user details:s', 1054);
+            throw new Exception('Error fetching user details: ' . $e->getMessage());
+        }
+    }
 }

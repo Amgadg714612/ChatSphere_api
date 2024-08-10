@@ -11,15 +11,16 @@ class GroupService {
     }
 
     // Create a new group
-    public function createGroup($name, $description) {
+    public function createGroup($name, $description,$id_admin) {
         try {
             // Create the group and return its ID
-            $groupId = $this->groupModel->createGroup($name, $description);
+            $groupId = $this->groupModel->createGroup($name, $description,$id_admin);
             return $groupId;
         } catch (Exception $e) {
             throw new Exception('Error creating group: ' . $e->getMessage());
         }
     }
+    
 
 
     // Retrieve group details by ID
@@ -59,7 +60,7 @@ class GroupService {
             throw new Exception('Error deleting group: ' . $e->getMessage());
         }
     }
-    public function getGroup($groupId) {
+    public function getGroup($groupId,$userId) {
         try {
             return $this->groupModel->getGroupById($groupId);
         } catch (Exception $e) {
@@ -67,7 +68,15 @@ class GroupService {
             throw new Exception('Error retrieving group: ' . $e->getMessage());
         }
     }
-    public function addMemberToGroup($groupId, $userId) {
-        return $this->groupModel->addMemberToGroup($groupId, $userId);
+    public function addMemberToGroup($groupId, $userId,$permissions, $idUserMember) {
+        return $this->groupModel->addMemberToGroup($groupId, $userId,$permissions, $idUserMember);
+    }
+    public function canAddMember($userId, $groupId) {
+        try {
+            // افحص ما إذا كان المستخدم هو المدير أو لديه صلاحيات خاصة للمجموعة
+            return $this->groupModel->isGroupAdmin($userId, $groupId) || $this->groupModel->hasAddMemberPermission($userId, $groupId);
+        } catch (Exception $e) {
+            throw new Exception('Error checking permissions: ' . $e->getMessage());
+        }
     }
 }

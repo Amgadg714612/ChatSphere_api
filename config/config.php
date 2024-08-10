@@ -2,23 +2,16 @@
 
 require_once 'utils/Logger.php';
 
-
 // $servername =  "https://alwahash.online" ;//"https://alwahash.online
 // $username = "u940853030_adam11";
 // $password = "_4263AdamDB_";
-
-
 // بيانات الاتصال بقاعدة البيانات
-
-
 $host = '127.0.0.1'; // أو عنوان الخادم الخاص بقاعدة البيانات
 $user = 'root';      // اسم المستخدم لقاعدة البيانات
 $pass = '';    // كلمة مرور قاعدة البيانات
-
 //////////////////////////////////////////////////////
 $db   = 'chatAPI';      // اسم قاعدة البيانات
 $charset = 'utf8mb4'; // ترميز الأحرف
-
 $dsn = "mysql:host=$host";
 $options = [
     PDO::ATTR_ERRMODE            => PDO::ERRMODE_EXCEPTION, // تفعيل وضع الأخطاء للتعامل مع الاستثناءات
@@ -27,7 +20,6 @@ $options = [
 ];
 
 Logger::setLogFilePath(__DIR__ . '/logs/app.log');
-
 try {
     // إنشاء كائن PDO للاتصال بالخادم فقط
     $pdo = new PDO($dsn, $user, $pass, $options);
@@ -62,41 +54,68 @@ try {
               id INT AUTO_INCREMENT PRIMARY KEY,
               name VARCHAR(255) NOT NULL,
               description TEXT,
-              created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+              id_userAdmin INT NOT NULL,
+              created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+             FOREIGN KEY (id_userAdmin) REFERENCES users(id)
           )
       ");
+
+
     $pdo->exec("
-      CREATE TABLE IF NOT EXISTS messages (
-          id INT AUTO_INCREMENT PRIMARY KEY,
-          user_id INT NOT NULL,
-          group_id INT DEFAULT NULL,
-          conversation_id INT DEFAULT NULL,
-          message TEXT NOT NULL,
-          created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-          FOREIGN KEY (user_id) REFERENCES users(id),
-          FOREIGN KEY (group_id) REFERENCES groups(id),
-          FOREIGN KEY (conversation_id) REFERENCES conversations(id)
-      )
-  ");
-  $pdo->exec("
+  CREATE TABLE IF NOT EXISTS personal_messages (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    sender_id INT NOT NULL,
+    receiver_id INT NOT NULL,
+    message TEXT NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (sender_id) REFERENCES users(id),
+    FOREIGN KEY (receiver_id) REFERENCES users(id)
+)
+");
+
+    $pdo->exec("
+   CREATE TABLE IF NOT EXISTS group_messages (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    sender_id INT NOT NULL,
+    group_id INT NOT NULL,
+    message TEXT NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (sender_id) REFERENCES users(id),
+    FOREIGN KEY (group_id) REFERENCES groups(id)
+     
+
+)
+");
+
+
+    $pdo->exec("
     CREATE TABLE IF NOT EXISTS tokens (
         id INT AUTO_INCREMENT PRIMARY KEY,
         user_id INT NOT NULL,
         token VARCHAR(255) NOT NULL UNIQUE,
         created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    expires_at DATETIME NOT NULL,
+       expires_at DATETIME NOT NULL,
         FOREIGN KEY (user_id) REFERENCES users(id)
     )
 ");
-
-    $response['status'] = 'success';
-    $response['message'] = 'Database and tables are set up successfully!';
+    $pdo->exec("
+CREATE TABLE IF NOT EXISTS user_groups (
+    user_id INT NOT NULL,
+    group_id INT NOT NULL,
+    permissions SET('read', 'write', 'admin') DEFAULT 'read',
+    idUserMember INT NOT NULL,
+    joined_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    PRIMARY KEY (user_id, group_id),
+    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
+    FOREIGN KEY (group_id) REFERENCES groups(id) ON DELETE CASCADE,
+    FOREIGN KEY (idUserMember) REFERENCES users(id)
+)
+");
 } catch (\PDOException $e) {
     // التعامل مع الأخطاء في حالة فشل الاتصال
 
     $response['status'] = 'error';
     $response['message'] = 'Error: ' . $e->getMessage();
+    // إعادة الرسالة بصيغة JSON
+    echo json_encode($response);
 }
-
-// إعادة الرسالة بصيغة JSON
-echo json_encode($response);

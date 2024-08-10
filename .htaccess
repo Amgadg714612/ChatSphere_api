@@ -6,3 +6,6 @@ RewriteBase /ChatSphere/ChatSphere_api/
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_FILENAME} !-d
 RewriteRule ^(.*)$ index.php [QSA,L]
+# Ensure Authorization headers are passed to PHP
+RewriteCond %{HTTP:Authorization} .
+RewriteRule ^(.*)$ - [E=HTTP_AUTHORIZATION:%{HTTP:Authorization}]
