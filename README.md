@@ -50,6 +50,10 @@ http://localhost/ChatSphere/ChatSphere_api/chat-api/login
 
 
 
+ يتم إرسال التوكن ليقوم الخادم بمراجعة صلاحيات المستخدم المرتبطة به، مثل صلاحيات المشرف أو المستخدم العادي 
+ Authorization: Bearer <your_token_here>
+
+
 create   Groups
 {
     "name": "h م ",
