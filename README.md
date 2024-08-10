@@ -10,11 +10,10 @@
 
 ![image](https://github.com/user-attachments/assets/e8b7019e-1d13-4f7d-b265-781cfaed784f)
 
+![image](https://github.com/user-attachments/assets/ae0f7b02-3df2-493e-8f64-28dffac91541)
 
-![image](https://github.com/user-attachments/assets/c599feda-30b4-4339-9518-bfd3ff79f933)
 
-
-![image](https://github.com/user-attachments/assets/226ce109-98e0-4248-b09d-2ba51cd64558)
+![image](https://github.com/user-attachments/assets/601b5e58-63b5-4800-a0a3-56e5bfa29e59)
 
 
 
@@ -49,7 +48,29 @@ http://localhost/ChatSphere/ChatSphere_api/chat-api/login
 
  ![image](https://github.com/user-attachments/assets/0bfcbdea-3afb-42bc-b9ae-e33275addf8e)
 
- 
 
 
+ يتم إرسال التوكن ليقوم الخادم بمراجعة صلاحيات المستخدم المرتبطة به، مثل صلاحيات المشرف أو المستخدم العادي 
+ Authorization: Bearer <your_token_here>
+
+
+create   Groups
+{
+    "name": "h م ",
+    "description": "مجموعة خاصة  بالسيرب",
+     "action":  "create Group"
+}
+
+ ![image](https://github.com/user-attachments/assets/5d381047-2fd5-47a2-a61e-dbca0f574c60)
+
+
+add Member to group 
+{
+    "groupId": "1",
+    "action":"addMember",
+    "memberEmail":"amjad2024@gmail.com"
+
+}
+
+![image](https://github.com/user-attachments/assets/23fdced7-d338-4aec-859c-97cbf4d7c945)
 
