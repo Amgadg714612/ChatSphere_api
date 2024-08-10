@@ -49,7 +49,25 @@ http://localhost/ChatSphere/ChatSphere_api/chat-api/login
 
  ![image](https://github.com/user-attachments/assets/0bfcbdea-3afb-42bc-b9ae-e33275addf8e)
 
- 
 
 
+create   Groups
+{
+    "name": "h م ",
+    "description": "مجموعة خاصة  بالسيرب",
+     "action":  "create Group"
+}
+
+ ![image](https://github.com/user-attachments/assets/5d381047-2fd5-47a2-a61e-dbca0f574c60)
+
+
+add Member to group 
+{
+    "groupId": "1",
+    "action":"addMember",
+    "memberEmail":"amjad2024@gmail.com"
+
+}
+
+![image](https://github.com/user-attachments/assets/23fdced7-d338-4aec-859c-97cbf4d7c945)
 
