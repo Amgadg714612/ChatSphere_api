@@ -3,10 +3,12 @@
 require_once 'services/MessageService.php';
 require_once 'models/Message.php';
 
-class MessageController {
+class MessageController
+{
     private $messageService;
 
-    public function __construct() {
+    public function __construct()
+    {
         $pdo = require 'config/config.php'; // Assuming this returns a PDO instance
         $messageModel = new Message($pdo);
         $this->messageService = new MessageService($messageModel);
@@ -14,13 +16,17 @@ class MessageController {
 
     /**
      * Handle the request to send a new message.
-     
      */
+    public function handleRequest($method, $params = [])
+    {
 
-     public function handleRequest($method, $params = []) {
         switch ($method) {
             case 'POST':
-                $this->sendMessage();
+                $data = json_decode(file_get_contents('php://input'), true);
+                if (empty($data['sendMessageTogroup']) & $data['sendMessageTogroup'] === 'sendMessageTogroup')
+                      $this->sendMessagetoGroup($data);
+                else 
+                $this->sendMessage($data);
                 break;
             case 'GET':
                 if (isset($params['conversationId'])) {
@@ -48,24 +54,42 @@ class MessageController {
                 break;
             default:
                 http_response_code(405); // Method Not Allowed
-        echo ResponseFormatter::error('Method not allowed',405);        }
+                echo ResponseFormatter::error('Method not allowed', 405);
+        }
     }
-    
-    public function sendMessage() {
+
+    public function sendMessage()
+    {
+
+
         $data = json_decode(file_get_contents('php://input'), true);
-        
         // Validate request data
         if (empty($data['conversationId']) || empty($data['senderId']) || empty($data['message'])) {
             $this->sendResponse(400, ['error' => 'Conversation ID, sender ID, and message content are required']);
             return;
         }
-
-        
         if (empty($data['message'])) {
             $this->sendResponse(400, ['error' => 'Message content is required']);
             return;
         }
+        try {
+            $messageId = $this->messageService->sendMessage($data['conversationId'], $data['senderId'], $data['message']);
+            $this->sendResponse(201, ['messageId' => $messageId, 'status' => 'Message sent successfully']);
+        } catch (Exception $e) {
+            $this->sendResponse(500, ['error' => $e->getMessage()]);
+        }
+    }
+    
+    public function sendMessagetoGroup($data)
+    {
 
+
+        // Validate request data
+    
+        if (empty($data['message'])) {
+            $this->sendResponse(400, ['error' => 'Message content is required']);
+            return;
+        }
         try {
             $messageId = $this->messageService->sendMessage($data['conversationId'], $data['senderId'], $data['message']);
             $this->sendResponse(201, ['messageId' => $messageId, 'status' => 'Message sent successfully']);
@@ -77,7 +101,8 @@ class MessageController {
     /**
      * Handle the request to get messages from a conversation.
      */
-    public function getMessages($conversationId) {
+    public function getMessages($conversationId)
+    {
         if (empty($conversationId)) {
             $this->sendResponse(400, ['error' => 'Conversation ID is required']);
             return;
@@ -94,7 +119,8 @@ class MessageController {
     /**
      * Handle the request to delete a message.
      */
-    public function deleteMessage($messageId) {
+    public function deleteMessage($messageId)
+    {
         if (empty($messageId)) {
             $this->sendResponse(400, ['error' => 'Message ID is required']);
             return;
@@ -115,7 +141,8 @@ class MessageController {
     /**
      * Handle the request to update a message.
      */
-    public function updateMessage($messageId) {
+    public function updateMessage($messageId)
+    {
         $data = json_decode(file_get_contents('php://input'), true);
 
         if (empty($messageId)) {
@@ -143,10 +170,10 @@ class MessageController {
     /**
      * Send a JSON response with the given status code and data.
      */
-    private function sendResponse($statusCode, $data) {
+    private function sendResponse($statusCode, $data)
+    {
         http_response_code($statusCode);
         header('Content-Type: application/json');
         echo json_encode($data);
     }
 }
-?>

@@ -16,13 +16,12 @@ class AuthMiddleware {
         if ($authHeader) {
             // استخراج التوكن من رأس الطلب
             $token = str_replace('Bearer ', '', $authHeader);
-            
             $tokenService = new TokenService(); // إنشاء كائن لخدمة التوكن
             // تحقق من التوكن في قاعدة البيانات
             if ($tokenService->validateToken($token)) {
                 // يمكنك هنا إعداد الجلسة للمستخدم إذا لزم الأمر
                 $_SESSION['user_id'] = self::getUserIdFromToken($token); // إعداد معرف المستخدم في الجلسة
-                return; // التوكن صحيح
+                return true; // التوكن صحيح
             }
         }
 

@@ -20,24 +20,31 @@ $requestEndpoint = $_SERVER['REQUEST_URI'];
  $requestEndpoint = strtok($requestEndpoint, '?');
 // Dispatch the request to the appropriate controller
 switch ($requestEndpoint) {
-    case '/ChatSphere/ChatSphere_api/chat-api/users':
-        handleUserRequest($requestMethod);
-        break;
-    case '/ChatSphere/ChatSphere_api/chat-api/groups':
-        handleGroupRequest($requestMethod);
-        break;
-    case '/ChatSphere/ChatSphere_api/chat-api/messages':
-        handleMessageRequest($requestMethod);
-        break;
-    case '/ChatSphere/ChatSphere_api/chat-api/conversations':
-        handleConversationRequest($requestMethod);
-        break;
-    case '/ChatSphere/ChatSphere_api/chat-api/login':
+case '/ChatSphere/ChatSphere_api/chat-api/login':
             handleLoginRequest($requestMethod);
             break;
      case '/ChatSphere/ChatSphere_api/chat-api/signup': // New endpoint for signup
                 handleSignupRequest($requestMethod);
                 break;
+
+    case '/ChatSphere/ChatSphere_api/chat-api/users':
+        // token  ----------->->->>
+        handleUserRequest($requestMethod);
+        break;
+    case '/ChatSphere/ChatSphere_api/chat-api/groups':
+                // token  ----------->->->>
+
+        handleGroupRequest($requestMethod);
+        break;
+    case '/ChatSphere/ChatSphere_api/chat-api/messages':
+                // token  ----------->->->>
+        handleMessageRequest($requestMethod);
+        break;
+    case '/ChatSphere/ChatSphere_api/chat-api/conversations':
+                // token  ----------->->->>
+        handleConversationRequest($requestMethod);
+        break;
+    
     default:
         // Handle invalid or unsupported endpoint
         http_response_code(404);
@@ -96,6 +103,36 @@ function handleMessageRequest($method) {
     $messageController->handleRequest($method, $params);
 }
 
+// Handle message requests
+function handleMessageRequesttogroup($method) {
+
+    $authHeader = $_SERVER['HTTP_AUTHORIZATION'] ?? null;
+    if (!$authHeader) {
+        echo ResponseFormatter::error('Token is required', 401);
+        exit;
+    }
+
+    // تحقق من التوكن واستخرج userId
+    $tokenService = new TokenService();
+    $userId = $tokenService->getUserIdFromToken($authHeader);
+
+    if ($userId === null) {
+        echo ResponseFormatter::error('Invalid token', 403);
+        exit;
+    }
+
+    // إعداد المعاملات
+    $params = [];
+    if (isset($_GET['messageId'])) {
+        $params['messageId'] = (int)$_GET['messageId']; // تأكد من أن messageId هو عدد صحيح
+    }
+    // إعداد الخدمات والتحكم
+    $pdo = require 'config/config.php'; // Assuming this returns a PDO instance;
+    $messageService = new GroupMessageService($$pdo);
+    $messageController = new GroupMessageController($messageService);
+    // معالجة الطلبات
+    $messageController->handleRequest($method, $params, $userId);
+}
 // Handle conversation requests
 function handleConversationRequest($method) {
     $params = [];
