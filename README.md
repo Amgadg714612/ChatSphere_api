@@ -74,3 +74,31 @@ add Member to group
 
 ![image](https://github.com/user-attachments/assets/23fdced7-d338-4aec-859c-97cbf4d7c945)
 
+
+send massage to  group   if public 
+{
+  "groupId": "1",
+  "message": "hi   my is ahmahed to  file "
+}
+![image](https://github.com/user-attachments/assets/a4f17add-d768-4fa0-96cc-a3ffe21beb86)
+
+send massage to   group  but replay  
+{
+  "groupId": "1",
+  "message": "محمد  صلي الله   علية  وسلم ",
+  "action": "reply",
+  "replyTo":"3"
+}
+![image](https://github.com/user-attachments/assets/ada30b7c-4bd7-4945-a809-b34cba1ff860)
+
+
+show massage in  group 1 
+{
+ "groupId": "1"
+}
+![image](https://github.com/user-attachments/assets/a3aff4b3-bcf9-4190-a174-711b1de975e3)
+
+
+
+
+
