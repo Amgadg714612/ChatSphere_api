@@ -2,7 +2,7 @@
 
 require_once 'services/GroupMessageService.php';
 require_once 'utils/ResponseFormatter.php';
-require_once 'middlewares/AuthMiddleware.php';
+require_once 'middleware/AuthMiddleware.php';
 class GroupMessageController
 {
     private $groupMessageService;
@@ -16,11 +16,12 @@ class GroupMessageController
     {
         switch ($method) {
             case 'GET':
-                if (isset($params['groupId'])) {
-                    $this->getGroupMessages($params['groupId'], $userId);
+                $data = json_decode(file_get_contents('php://input'), true);
+                if (isset($data['groupId'])) {
+                    $this->getGroupMessages($data['groupId'], $userId);
                 } else {
                     // إذا لم يتم توفير معرف المجموعة، يمكن إعادة قائمة بجميع المجموعات (أو التعامل مع هذا بشكل مختلف).
-                    echo ResponseFormatter::error('Group ID is required', 400);
+                    echo ResponseFormatter::error('Group ID is required y', 400);
                 }
                 break;
 

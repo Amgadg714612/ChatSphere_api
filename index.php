@@ -5,6 +5,7 @@ require_once 'controllers/UserController.php';
 require_once 'controllers/GroupController.php';
 require_once 'controllers/MessageController.php';
 require_once 'controllers/ConversationController.php';
+require_once 'controllers/GroupMessageController.php';
 
 // # OF ERROR 403  // Unauthorized 
 //  # OF  ERROR 401 Token is required 
@@ -36,6 +37,11 @@ case '/ChatSphere/ChatSphere_api/chat-api/login':
 
         handleGroupRequest($requestMethod);
         break;
+        case '/ChatSphere/ChatSphere_api/chat-api/groupsMessage':
+            // token  ----------->->->>
+
+    handleMessageRequesttogroup($requestMethod)
+;    break;
     case '/ChatSphere/ChatSphere_api/chat-api/messages':
                 // token  ----------->->->>
         handleMessageRequest($requestMethod);
@@ -105,7 +111,6 @@ function handleMessageRequest($method) {
 
 // Handle message requests
 function handleMessageRequesttogroup($method) {
-
     $authHeader = $_SERVER['HTTP_AUTHORIZATION'] ?? null;
     if (!$authHeader) {
         echo ResponseFormatter::error('Token is required', 401);
@@ -115,7 +120,6 @@ function handleMessageRequesttogroup($method) {
     // تحقق من التوكن واستخرج userId
     $tokenService = new TokenService();
     $userId = $tokenService->getUserIdFromToken($authHeader);
-
     if ($userId === null) {
         echo ResponseFormatter::error('Invalid token', 403);
         exit;
@@ -126,9 +130,9 @@ function handleMessageRequesttogroup($method) {
     if (isset($_GET['messageId'])) {
         $params['messageId'] = (int)$_GET['messageId']; // تأكد من أن messageId هو عدد صحيح
     }
-    // إعداد الخدمات والتحكم
-    $pdo = require 'config/config.php'; // Assuming this returns a PDO instance;
-    $messageService = new GroupMessageService($$pdo);
+    $pdo = require 'config/config.php'; 
+    $messageModel = new GroupMessageModel($pdo);
+    $messageService = new GroupMessageService($messageModel);
     $messageController = new GroupMessageController($messageService);
     // معالجة الطلبات
     $messageController->handleRequest($method, $params, $userId);

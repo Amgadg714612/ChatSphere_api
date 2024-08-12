@@ -6,8 +6,8 @@ require_once 'utils/Logger.php';
 class GroupMessageService {
     private $groupMessageModel;
 
-    public function __construct($pdo) {
-        $this->groupMessageModel = new GroupMessageModel($pdo);
+    public function __construct() {
+        $this->groupMessageModel = new GroupMessageModel();
     }
 
     public function deleteMessage($messageId, $userId)

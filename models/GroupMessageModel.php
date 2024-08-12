@@ -3,7 +3,8 @@
 class GroupMessageModel {
     private $pdo;
 
-    public function __construct($pdo) {
+    public function __construct() {
+        global $pdo; // Use the PDO instance from the config file
         $this->pdo = $pdo;
     }
 
