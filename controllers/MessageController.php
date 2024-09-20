@@ -2,16 +2,19 @@
 
 require_once 'services/MessageService.php';
 require_once 'models/Message.php';
+require_once 'utils/ResponseFormatter.php';
 
 class MessageController
 {
     private $messageService;
+    private $responseformate;
 
     public function __construct()
     {
         $pdo = require 'config/config.php'; // Assuming this returns a PDO instance
         $messageModel = new Message($pdo);
         $this->messageService = new MessageService($messageModel);
+        $this->responseformate=new ResponseFormatter();
     }
 
     /**
@@ -25,15 +28,18 @@ class MessageController
                 $data = json_decode(file_get_contents('php://input'), true);
                 if (empty($data['sendMessageTogroup']) & $data['sendMessageTogroup'] === 'sendMessageTogroup')
                       $this->sendMessagetoGroup($data);
-                else 
+                elseif (!empty($data['sendmassgeuserB']) & $data['sendmassgeuserB'] === 'sendmassgeuserB') 
+               {
                 $this->sendMessage($data);
+               } 
                 break;
             case 'GET':
                 if (isset($params['conversationId'])) {
                     $this->getMessages($params['conversationId']);
                 } else {
                     http_response_code(400); // Bad Request
-                    echo json_encode(['error' => 'Conversation ID is required']);
+                    $this->responseformate->error('Conversation ID is required',400);
+
                 }
                 break;
             case 'PUT':
@@ -64,12 +70,12 @@ class MessageController
 
         $data = json_decode(file_get_contents('php://input'), true);
         // Validate request data
-        if (empty($data['conversationId']) || empty($data['senderId']) || empty($data['message'])) {
-            $this->sendResponse(400, ['error' => 'Conversation ID, sender ID, and message content are required']);
+        if (empty($data['conversationId']) || empty($data['senderId'])) {
+            $this->responseformate->error('Conversation ID, sender ID, and message content are required',400);
             return;
         }
         if (empty($data['message'])) {
-            $this->sendResponse(400, ['error' => 'Message content is required']);
+            $this->responseformate->error('Message content is required',400);
             return;
         }
         try {
