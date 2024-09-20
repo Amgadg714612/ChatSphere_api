@@ -3,7 +3,6 @@
 require_once 'services/MessageService.php';
 require_once 'models/Message.php';
 require_once 'utils/ResponseFormatter.php';
-
 class MessageController
 {
     private $messageService;
@@ -14,7 +13,7 @@ class MessageController
         $pdo = require 'config/config.php'; // Assuming this returns a PDO instance
         $messageModel = new Message($pdo);
         $this->messageService = new MessageService($messageModel);
-        $this->responseformate=new ResponseFormatter();
+        $this->responseformate = new ResponseFormatter();
     }
 
     /**
@@ -22,24 +21,26 @@ class MessageController
      */
     public function handleRequest($method, $params = [])
     {
-
         switch ($method) {
             case 'POST':
                 $data = json_decode(file_get_contents('php://input'), true);
-                if (empty($data['sendMessageTogroup']) & $data['sendMessageTogroup'] === 'sendMessageTogroup')
-                      $this->sendMessagetoGroup($data);
-                elseif (!empty($data['sendmassgeuserB']) & $data['sendmassgeuserB'] === 'sendmassgeuserB') 
-               {
-                $this->sendMessage($data);
-               } 
+                if (!empty($data['action']) & $data['action'] === 'sendMessageTogroup') {
+                    $this->sendMessagetoGroup($data);
+                } elseif (!empty($data['action']) & $data['action'] === 'sendmassgeuserB') {
+                    $this->sendmassageOnetoOne($data);
+                }
+                else {
+                    echo 'wkse ';
+                }
                 break;
+
             case 'GET':
+
                 if (isset($params['conversationId'])) {
                     $this->getMessages($params['conversationId']);
                 } else {
                     http_response_code(400); // Bad Request
-                    $this->responseformate->error('Conversation ID is required',400);
-
+                    $this->responseformate->error('Conversation ID is required', 400);
                 }
                 break;
             case 'PUT':
@@ -67,46 +68,71 @@ class MessageController
     public function sendMessage()
     {
 
-
         $data = json_decode(file_get_contents('php://input'), true);
         // Validate request data
         if (empty($data['conversationId']) || empty($data['senderId'])) {
-            $this->responseformate->error('Conversation ID, sender ID, and message content are required',400);
+            $this->responseformate->error('Conversation ID, sender ID, and message content are required', 400);
             return;
         }
         if (empty($data['message'])) {
-            $this->responseformate->error('Message content is required',400);
+            $this->responseformate->error('Message content is required', 400);
             return;
         }
         try {
             $messageId = $this->messageService->sendMessage($data['conversationId'], $data['senderId'], $data['message']);
-            $this->sendResponse(201, ['messageId' => $messageId, 'status' => 'Message sent successfully']);
+           echo ResponseFormatter::success(['messageId' => $messageId, 'status' => 'Message sent successfully']);
         } catch (Exception $e) {
-            $this->sendResponse(500, ['error' => $e->getMessage()]);
+            echo ResponseFormatter::error(['error' => $e->getMessage()],500);
         }
     }
-    
+
     public function sendMessagetoGroup($data)
     {
 
 
         // Validate request data
-    
+
         if (empty($data['message'])) {
-            $this->sendResponse(400, ['error' => 'Message content is required']);
+            echo ResponseFormatter::error('Message content is required',400);
             return;
         }
         try {
             $messageId = $this->messageService->sendMessage($data['conversationId'], $data['senderId'], $data['message']);
-            $this->sendResponse(201, ['messageId' => $messageId, 'status' => 'Message sent successfully']);
+            echo ResponseFormatter::success( ['messageId' => $messageId, 'status' => 'Message sent successfully'], 'Message sent successfully');
         } catch (Exception $e) {
-            $this->sendResponse(500, ['error' => $e->getMessage()]);
+            echo ResponseFormatter::error($e->getMessage(),500);
         }
     }
 
     /**
      * Handle the request to get messages from a conversation.
+     * Message updated successfully
+     * INSERT INTO `personal_messages`(`id`, `sender_id`, `receiver_id`, `message`, `created_at`) VALUES ('[value-1]','[value-2]','[value-3]','[value-4]','[value-5]')
+     * Message updated successfully
      */
+    public function  sendmassageOnetoOne($data)
+    {
+        // Validate request data
+        if (empty($data['receiver_email']) || empty($data['senderId'])) {
+            echo ResponseFormatter:: error('receiver_email, sender ID, and message content are required', 400);
+            return;
+        }
+        if (empty($data['message'])) {
+          echo ResponseFormatter::error('Message content is required', 400);
+            return;
+        }
+        
+        try {
+            $UserService = new UserService();
+            $receiver = $UserService->getUserByEmail($data['receiver_email']);
+            $receiver_id = $receiver['id'];
+            echo  $data['senderId'];
+            $messageId = $this->messageService->sendMessageoneTOone($receiver_id, $data['senderId'], $data['message']);
+            echo ResponseFormatter::success(['messageId' => $messageId, 'status' => 'Message sent successfully'], 'Message sent successfully');
+        } catch (Exception $e) {
+            echo ResponseFormatter::error($e->getMessage(), 500);
+        }
+    }
     public function getMessages($conversationId)
     {
         if (empty($conversationId)) {
@@ -164,22 +190,12 @@ class MessageController
         try {
             $success = $this->messageService->updateMessage($messageId, $data['message']);
             if ($success) {
-                $this->sendResponse(200, ['status' => 'Message updated successfully']);
+                echo ResponseFormatter::success('200', "Message updated successfully");
             } else {
-                $this->sendResponse(404, ['error' => 'Message not found']);
+                echo ResponseFormatter::error("Message not found", 404);
             }
         } catch (Exception $e) {
-            $this->sendResponse(500, ['error' => $e->getMessage()]);
+            echo ResponseFormatter::error($e->getMessage(), 500);
         }
-    }
-
-    /**
-     * Send a JSON response with the given status code and data.
-     */
-    private function sendResponse($statusCode, $data)
-    {
-        http_response_code($statusCode);
-        header('Content-Type: application/json');
-        echo json_encode($data);
     }
 }

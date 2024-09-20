@@ -37,13 +37,15 @@ class Token {
      */
 
 
-     public function updateToken($userId, $newToken, $newExpiresAt) {
+     public function updateToken($userId, $newToken, $newExpiresAt,$createdAt) {
         try {
-            $stmt = $this->pdo->prepare("UPDATE tokens SET token = :newToken, expires_at = :newExpiresAt WHERE user_id = :userId");
+            $stmt = $this->pdo->prepare("UPDATE tokens SET token = :newToken, expires_at = :newExpiresAt , created_at=:created_at WHERE user_id = :userId");
             $stmt->execute([
                 'newToken' => $newToken,
                 'newExpiresAt' => $newExpiresAt,
+                'created_at' => $createdAt,
                 'userId' => $userId
+
             ]);
 
         } catch (PDOException $e) {
@@ -55,14 +57,14 @@ class Token {
     public function isValid($token) {
         $stmt = $this->pdo->prepare("SELECT * FROM tokens WHERE token = ? AND expires_at > NOW()");
         $stmt->execute([$token]);
-        echo "dddddddddd";
         return $stmt->fetch() !== false;
     }
  
     public function getUserIdFromToken($token) {
-        $stmt = $this->pdo->prepare('SELECT user_id FROM tokens WHERE token = ? AND expires_at > NOW()');
+        $NEWTIME = date('Y-m-d H:i:s'); // وقت إنشاء التوكن الحالي
+        $stmt = $this->pdo->prepare('SELECT user_id FROM tokens WHERE token = ? AND expires_at > ?');
         // $stmt = $this->pdo->prepare('SELECT user_id FROM tokens WHERE token = ? AND expires_at > NOW()');
-        $stmt->execute([$token]);
+        $stmt->execute([$token,$NEWTIME]);
         $row = $stmt->fetch();
         return $row ? $row['user_id'] : null;
     }

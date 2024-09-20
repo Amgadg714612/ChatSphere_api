@@ -21,7 +21,9 @@ class GroupController
 
             case 'GET':
                 if (isset($params['id'])) {
-                    $this->getGroup($userId);
+                    $groupId=$params['groupid'];
+                    $this->getGroup( $groupId,$userId);
+
                 } else {
                     // If no ID is provided, you might want to return a list of groups
                     $this->getAllGroups();
@@ -34,10 +36,12 @@ class GroupController
                     $this->addMemberToGroup($userIdadmin, $data);
                 } 
                 
-                else
-                    $this->createGroup($userId, $data);
-
-                break;
+                elseif( $data['action'] === "create Group") 
+                {    $this->createGroup($userId, $data); 
+                break;}
+                else 
+                echo ResponseFormatter::error('action is required',400);
+               break;
             case 'PUT':
                 if (isset($params['id'])) {
                     $this->updateGroup($params['id']);

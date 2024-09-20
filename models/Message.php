@@ -47,6 +47,24 @@ class Message {
             throw new Exception('Error creating message: ' . $e->getMessage());
         }
     }
+    // Create a new message
+    public function createMessageoneTone ($userId,$receiver_id, $message) {
+        try {
+            $stmt = $this->pdo->prepare("INSERT INTO personal_messages (sender_id,receiver_id,message,created_at) VALUES (:sender_id,:receiver_id,:message,:created_at)");
+            $createdAt = date('Y-m-d H:i:s'); // وقت إنشاء  الحالي
+            $stmt->execute([
+                'sender_id' => $userId,
+                ' receiver_id' => $receiver_id,
+                'message' => $message,
+                'created_at'=> $createdAt,
+            ]);
+
+            return $this->pdo->lastInsertId(); // Return the ID of the newly created message
+        } catch (PDOException $e) {
+          echo  ResponseFormatter::error($e->getMessage() ,447);
+
+        }
+    }
 
     // Update a specific message
     public function updateMessage($id, $message) {

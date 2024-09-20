@@ -13,11 +13,25 @@ class MessageService {
     // Send a new message
     public function sendMessage($conversationId, $senderId, $messageContent) {
         try {
+
             // Create the message
             $messageId = $this->messageModel->createMessage($conversationId, $senderId, $messageContent);
             return $messageId; // Return the ID of the newly created message
         } catch (Exception $e) {
             throw new Exception('Error sending message: ' . $e->getMessage());
+        }
+    }
+
+     // Send a new message
+     public function sendMessageoneTOone($receiver_id,$senderId, $messageContent) {
+        try {
+            
+            
+            // Create the message
+            $messageId = $this->messageModel->createMessageoneTone($senderId,$receiver_id, $messageContent);
+            return $messageId; // Return the ID of the newly created message
+        } catch (Exception $e) {
+            echo ResponseFormatter::error( $e->getMessage());
         }
     }
 

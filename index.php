@@ -6,13 +6,11 @@ require_once 'controllers/GroupController.php';
 require_once 'controllers/MessageController.php';
 require_once 'controllers/ConversationController.php';
 require_once 'controllers/GroupMessageController.php';
-
 // # OF ERROR 403  // Unauthorized 
 //  # OF  ERROR 401 Token is required 
 // # OF ERROR  405  Method Not Allowed 
 // # of error  404 objects not found 
 // # of error 500 Internal Server Error
-
 // Handle the incoming request
 $requestMethod = $_SERVER['REQUEST_METHOD'];
 $requestEndpoint = $_SERVER['REQUEST_URI'];
@@ -75,9 +73,8 @@ function handleGroupRequest($method) {
       // تحقق من التوكن واستخرج userId
       $tokenService = new TokenService();
       $userId = $tokenService->getUserIdFromToken($authHeader);
-  
       if ($userId === null) {
-        echo ResponseFormatter::error('Invalid token',403);
+        echo ResponseFormatter::error('Invalid token NOT END',403);
           exit;
       }
   
@@ -102,9 +99,7 @@ function handleMessageRequest($method) {
     if (isset($_GET['messageId'])) {
         $params['messageId'] = (int)$_GET['messageId']; // Ensure ID is an integer
     }
-    $pdo = require 'config/config.php'; // Assuming this returns a PDO instance
-    $messageModel = new Message($pdo);
-    $messageService = new MessageService($messageModel);
+    $messageService = new MessageService(new Message());
     $messageController = new MessageController($messageService);
     $messageController->handleRequest($method, $params);
 }
@@ -161,8 +156,8 @@ function handleLoginRequest($method) {
             $response = $userController->login($email, $password);
             echo $response;
         } else {
-            http_response_code(400);
-            echo json_encode(['error' => 'Username and password required not  int ']);
+            echo ResponseFormatter::error('Username  or email , password required ',400);
+             
         }
     } else {
         http_response_code(405);
