@@ -47,7 +47,6 @@ class TokenService {
         } // Generate a random token
         $newExpiresAt = date('Y-m-d H:i:s', strtotime('+40 minutes')); // Set token expiry (40 minutes from now)
         $createdAt = date('Y-m-d H:i:s'); // Get the current creation time
-
         $this->tokenModel->updateToken($userId33, $newtoken, $newExpiresAt,$createdAt);
         return $newtoken;
     }

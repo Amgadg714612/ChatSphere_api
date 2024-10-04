@@ -33,7 +33,7 @@ class UserController
                 $this->getUser();
                 break;
             case 'POST':
-                $this->createUser();
+                // $this->createUser();
                 break;
             case 'PUT':
                 $this->updateUser();
@@ -70,7 +70,8 @@ class UserController
     /**
      * Handle POST request to create a new user.
      */
-    private function createUser()
+
+    public function createUserDev()
     {
         $data = json_decode(file_get_contents('php://input'), true);
         $errors = [];
@@ -87,10 +88,17 @@ class UserController
             echo ResponseFormatter::validationError($errors);
             return;
         }
-        $user = $this->userService->registerUser($data['username'], $data['password'], $data['email']);
+        $userId = $this->userService->registerUserDEVLOPLER($data['username'], $data['email'], $data['password'],);
+        if ($userId) {
+            // إنشاء التوكن
+            $token = $this->tokenService->createToken($userId);
+            echo ResponseFormatter::success(['user_id' => $userId, 'token' => $token], 'User adding  successfully');
+        } else {
+            echo ResponseFormatter::error('Failed to adding user', 500);
+        }
         // $user = $this->userService->createUser($data);
-        if ($user) {
-            echo ResponseFormatter::success($user, 'User created successfully');
+        if ($userId) {
+            echo ResponseFormatter::success($userId, 'User created successfully');
         } else {
             echo ResponseFormatter::error('Failed to create user');
         }
@@ -157,40 +165,62 @@ class UserController
             echo ResponseFormatter::error('Failed to delete user', 500);
         }
     }
-    public function Signup($username, $email, $password)
+
+    public function adduser($username, $email, $password, $userRoles, $token)
     {
-        // التحقق من صحة البيانات
-        $errors = [];
-        if (!Validator::validateUsername($username)) {
-            $errors['username'] = 'Invalid username';
-        }
-        if (!Validator::validateEmail($email)) {
-            $errors['email'] = 'Invalid email';
-        }
-        if (!Validator::validatePassword($password)) {
-            $errors['password'] = 'Invalid password" Password must be at least 8 characters long and include at least one uppercase letter, one lowercase letter, and one number.';
-        }
-        if (!empty($errors)) {
-            return ResponseFormatter::validationError($errors);
-        }
-        // التحقق من وجود المستخدم بالفعل
-        $existingUser = $this->userService->getUserByUsername($username);
-        if ($existingUser) {
-            return ResponseFormatter::error('Username already exists', 400);
-        }
-        // إنشاء المستخدم
-        $hashedPassword = password_hash($password, PASSWORD_BCRYPT);
-        $userId = $this->userService->createUser([
-            'username' => $username,
-            'email' => $email,
-            'password' => $hashedPassword
-        ]);
-        if ($userId) {
-            // إنشاء التوكن
-            $token = $this->tokenService->createToken($userId);
-            return ResponseFormatter::success(['user_id' => $userId, 'token' => $token], 'User registered successfully');
+        if (!empty($token)) {
+            $tokenService = new TokenService();
+            $iduser = $tokenService->getUserIdFromToken($token);
+            echo $iduser;
+            if (!empty($iduser)) {
+                $errors = [];
+                if (!Validator::validateUsername($username)) {
+                    $errors['username'] = 'Invalid username';
+                }
+                if (!Validator::validateEmail($email)) {
+                    $errors['email'] = 'Invalid email';
+                }
+                if (!Validator::validatePassword($password)) {
+                    $errors['password'] = 'Invalid password" Password must be at least 8 characters long and include at least one uppercase letter, one lowercase letter, and one number.';
+                }
+                if (!Validator::validatRoles($userRoles)) {
+                    $errors['userRoles'] = 'Invalid  Roles';
+                }
+                if (!empty($errors)) {
+                    echo ResponseFormatter::validationError($errors);
+                }
+                $existingUser = $this->userService->getUserByUsername($username);
+                if ($existingUser) {
+                    echo ResponseFormatter::error('Username already exists', 400);
+                }
+                $RolesId = $this->userService->getidRolesbynameId($userRoles);
+                echo $RolesId;
+                if ($this->userService->isRolework($iduser, $RolesId) == true) {
+                    $hashedPassword = password_hash($password, PASSWORD_BCRYPT);
+                    $userId = $this->userService->createUser([
+                        'username' => $username,
+                        'email' => $email,
+                        'password' => $hashedPassword,
+                        'UserRole' =>  $RolesId,
+                    ]);
+                    if ($userId) {
+                        ////////////////////////////////////////////////////******* */
+                        $token = $this->tokenService->createToken($userId);
+                        echo ResponseFormatter::success(['user_id' => $userId, 'token' => $token], 'User adding  successfully');
+                    } else {
+                        echo ResponseFormatter::error('Failed to adding user', 500);
+                    }
+                } else {
+                    echo  ResponseFormatter::error('Failed to adding user B ROLES your', 500);
+                }
+            }
+            else {
+                echo  ResponseFormatter::error('Failed ! this token ending', 402);
+
+            }
         } else {
-            return ResponseFormatter::error('Failed to register user', 500);
+            // log loction  or ip address
+            echo  ResponseFormatter::error('Failed to token', 402);
         }
     }
     public function login()
@@ -204,7 +234,7 @@ class UserController
         }
         $user = $this->userService->getUserByEmail($email);
         if (!$user) {
-            echo ResponseFormatter::error('Invalid email or password', 401);
+            echo ResponseFormatter::error('Invalid email or password 1111 ', 401);
             return;
         }
         if (password_verify($password, $user['password'])) {

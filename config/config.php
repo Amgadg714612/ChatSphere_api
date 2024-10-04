@@ -1,7 +1,6 @@
 <?php
-
 require_once 'utils/Logger.php';
-
+require_once 'utils/ResponseFormatter.php';
 // $servername =  "https://alwahash.online" ;//"https://alwahash.online
 // $username = "u940853030_adam11";
 // $password = "_4263AdamDB_";
@@ -27,7 +26,9 @@ try {
     $pdo->exec("CREATE DATABASE IF NOT EXISTS `$db` CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci");
     // استخدام قاعدة البيانات المنشأة
     $pdo->exec("USE `$db`");
-
+    $pdo->exec("
+    CREATE TABLE IF NOT EXISTS roles (id INT AUTO_INCREMENT PRIMARY KEY,role_name VARCHAR(50) NOT NULL      )
+");
     // إنشاء الجداول إذا لم تكن موجودة
     $pdo->exec("
           CREATE TABLE IF NOT EXISTS users (
@@ -35,10 +36,12 @@ try {
               username VARCHAR(255) NOT NULL UNIQUE,
               email VARCHAR(255) NOT NULL UNIQUE,
               password VARCHAR(255) NOT NULL,
-              created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+              created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+              role_id INT NOT NULL,
+              FOREIGN KEY(role_id) REFERENCES roles(id)
           )
       ");
-
+    
 
 
     $pdo->exec("
@@ -55,10 +58,22 @@ try {
               name VARCHAR(255) NOT NULL,
               description TEXT,
               id_userAdmin INT NOT NULL,
+              group_icon  VARCHAR(255),
               created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
              FOREIGN KEY (id_userAdmin) REFERENCES users(id)
           )
       ");
+      $pdo->exec("
+      CREATE TABLE IF NOT EXISTS groups_USER (
+          groubuser_id INT AUTO_INCREMENT PRIMARY KEY,
+          name VARCHAR(255) NOT NULL,
+          description TEXT,
+          id_userAdmin INT NOT NULL,
+          group_icon  VARCHAR(255),
+          created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+         FOREIGN KEY (id_userAdmin) REFERENCES users(id)
+      )
+  ");
 
 
     $pdo->exec("
@@ -89,6 +104,7 @@ try {
 
 
     $pdo->exec("
+
     CREATE TABLE IF NOT EXISTS tokens (
         id INT AUTO_INCREMENT PRIMARY KEY,
         user_id INT NOT NULL,
@@ -97,6 +113,8 @@ try {
        expires_at DATETIME NOT NULL,
         FOREIGN KEY (user_id) REFERENCES users(id)
     )
+
+
 ");
     $pdo->exec("
 CREATE TABLE IF NOT EXISTS user_groups (
@@ -111,9 +129,17 @@ CREATE TABLE IF NOT EXISTS user_groups (
     FOREIGN KEY (idUserMember) REFERENCES users(id)
 )
 ");
-} catch (\PDOException $e) {
-    // التعامل مع الأخطاء في حالة فشل الاتصال
 
+// $pdo->exec("
+// INSERT INTO roles (role_name) VALUES
+// ('Developer'),
+// ('General Manager'),
+// ('Specific Manager'),
+// ('Media Employee'),
+// ('Regular Employee')
+//    ");
+} catch (PDOException $e) {
+    // التعامل مع الأخطاء في حالة فشل الاتصال
     $response['status'] = 'error';
     $response['message'] = 'Error: ' . $e->getMessage();
     // إعادة الرسالة بصيغة JSON

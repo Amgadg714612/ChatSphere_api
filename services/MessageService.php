@@ -3,9 +3,7 @@
 require_once 'models/Message.php'; // Import the Message model
 
 class MessageService {
-
     private $messageModel;
-
     public function __construct() {
         $this->messageModel = new Message(); // Initialize the Message model
     }
@@ -13,7 +11,6 @@ class MessageService {
     // Send a new message
     public function sendMessage($conversationId, $senderId, $messageContent) {
         try {
-
             // Create the message
             $messageId = $this->messageModel->createMessage($conversationId, $senderId, $messageContent);
             return $messageId; // Return the ID of the newly created message

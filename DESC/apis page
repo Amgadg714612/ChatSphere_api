@@ -1,0 +1,175 @@
+{
+    "clientName": "Thunder Client",
+    "collectionName": "chatapi",
+    "collectionId": "1d6f0185-edbe-4e33-ab22-b66d921588af",
+    "dateExported": "2024-10-03T21:50:52.663Z",
+    "version": "1.2",
+    "folders": [
+        {
+            "_id": "cfc375af-c175-4526-b524-c12c8cc68c49",
+            "name": "USERLOGINGANDSIGNUP",
+            "containerId": "",
+            "created": "2024-10-03T21:50:07.922Z",
+            "sortNum": 10000
+        }
+    ],
+    "requests": [
+        {
+            "_id": "f3d3961f-e3a0-4d15-b2a9-c615339d1bad",
+            "colId": "1d6f0185-edbe-4e33-ab22-b66d921588af",
+            "containerId": "cfc375af-c175-4526-b524-c12c8cc68c49",
+            "name": "adduSER",
+            "url": "http://localhost/ChatSphere/ChatSphere_api/chat-api/adduser",
+            "method": "POST",
+            "sortNum": 10000,
+            "created": "2024-10-02T21:22:47.554Z",
+            "modified": "2024-10-03T14:31:41.486Z",
+            "headers": [
+                {
+                    "name": "Authorization",
+                    "value": "d7df84d1ff013691513c4780897cd187d6e6304d4ae1fe10b1be7aa2b8c52b55"
+                }
+            ],
+            "body": {
+                "type": "json",
+                "raw": "{\n    \"username\": \"amjad2222\",\n    \"email\": \"amjad2220@gmaile.com\",\n    \"password\": \"QQQwea123sd\",\n    \"userRoles\": \"General Manager\"\n}",
+                "form": []
+            }
+        },
+        {
+            "_id": "f2f55c85-08c2-4e02-a77a-aec68a766fb1",
+            "colId": "1d6f0185-edbe-4e33-ab22-b66d921588af",
+            "containerId": "cfc375af-c175-4526-b524-c12c8cc68c49",
+            "name": "AddUserDev",
+            "url": "http://localhost/ChatSphere/ChatSphere_api/chat-api/ADuseDEV",
+            "method": "POST",
+            "sortNum": 20000,
+            "created": "2024-10-02T21:51:38.465Z",
+            "modified": "2024-10-02T22:11:00.289Z",
+            "headers": [],
+            "body": {
+                "type": "json",
+                "raw": "{\n    \"username\": \"amjad3\",\n    \"email\": \"amjad30@gmaile.com\",\n    \"password\": \"QQQwea123sd\"\n}\n",
+                "form": []
+            }
+        },
+        {
+            "_id": "e81f0a08-9030-4216-aa95-2f255494d319",
+            "colId": "1d6f0185-edbe-4e33-ab22-b66d921588af",
+            "containerId": "cfc375af-c175-4526-b524-c12c8cc68c49",
+            "name": "logindev",
+            "url": "http://localhost/ChatSphere/ChatSphere_api/chat-api/login",
+            "method": "POST",
+            "sortNum": 30000,
+            "created": "2024-10-02T21:59:13.635Z",
+            "modified": "2024-10-03T12:49:00.562Z",
+            "headers": [],
+            "body": {
+                "type": "json",
+                "raw": "{\n    \"email\": \"amjad30@gmaile.com\",\n    \"password\": \"QQQwea123sd\"\n}",
+                "form": []
+            }
+        },
+        {
+            "_id": "9c55af99-6e35-48b6-b08c-fcbf59173ee4",
+            "colId": "1d6f0185-edbe-4e33-ab22-b66d921588af",
+            "containerId": "cfc375af-c175-4526-b524-c12c8cc68c49",
+            "name": "loginAsGeneral Manager",
+            "url": "http://localhost/ChatSphere/ChatSphere_api/chat-api/login",
+            "method": "POST",
+            "sortNum": 40000,
+            "created": "2024-10-03T14:41:52.662Z",
+            "modified": "2024-10-03T14:43:20.758Z",
+            "headers": [],
+            "body": {
+                "type": "json",
+                "raw": "{\n    \"email\":  \"amjad2220@gmaile.com\",\n    \"password\": \"QQQwea123sd\"\n}",
+                "form": []
+            }
+        },
+        {
+            "_id": "8080ccbe-88e7-49ad-8eea-2581eb4e562a",
+            "colId": "1d6f0185-edbe-4e33-ab22-b66d921588af",
+            "containerId": "cfc375af-c175-4526-b524-c12c8cc68c49",
+            "name": "adduserbyGA",
+            "url": "http://localhost/ChatSphere/ChatSphere_api/chat-api/adduser",
+            "method": "POST",
+            "sortNum": 50000,
+            "created": "2024-10-03T14:44:22.525Z",
+            "modified": "2024-10-03T21:14:52.635Z",
+            "headers": [
+                {
+                    "name": "Authorization",
+                    "value": "1ff50954165867b05c88efbad93d3baa9f90cb792f074f13b2f9abca7fa78167"
+                }
+            ],
+            "body": {
+                "type": "json",
+                "raw": "{\n    \"username\": \"AHM333AD\",\n    \"email\": \"AHMU33DABD@GMAIL.com\",\n    \"password\": \"QQQwea123sd\",\n    \"userRoles\": \"Specific Manager\"\n}\n",
+                "form": []
+            }
+        },
+        {
+            "_id": "759202cf-2811-4993-bc44-eaf3d128a944",
+            "colId": "1d6f0185-edbe-4e33-ab22-b66d921588af",
+            "containerId": "cfc375af-c175-4526-b524-c12c8cc68c49",
+            "name": "loginbySPuser",
+            "url": "http://localhost/ChatSphere/ChatSphere_api/chat-api/login",
+            "method": "POST",
+            "sortNum": 60000,
+            "created": "2024-10-03T21:32:59.896Z",
+            "modified": "2024-10-03T21:35:25.891Z",
+            "headers": [],
+            "body": {
+                "type": "json",
+                "raw": "{\n  \n    \"email\": \"AHMU33DABD@GMAIL.com\",\n    \"password\": \"QQQwea123sd\"\n}",
+                "form": []
+            }
+        },
+        {
+            "_id": "9c58f767-d438-41c2-b3e1-9c4776ed48c1",
+            "colId": "1d6f0185-edbe-4e33-ab22-b66d921588af",
+            "containerId": "cfc375af-c175-4526-b524-c12c8cc68c49",
+            "name": "AddUserBySP Media Employee",
+            "url": "http://localhost/ChatSphere/ChatSphere_api/chat-api/adduser",
+            "method": "POST",
+            "sortNum": 70000,
+            "created": "2024-10-03T21:39:03.940Z",
+            "modified": "2024-10-03T21:41:29.481Z",
+            "headers": [
+                {
+                    "name": "Authorization",
+                    "value": "81b8df1ede3d82cded7131157c712dfa4b8958f269d0077061a9fde9bc000050"
+                }
+            ],
+            "body": {
+                "type": "json",
+                "raw": "{\n    \"username\": \"ALMOTAMEN\",\n    \"email\": \"ALNOTMAN@GMAIL.COM\",\n    \"password\": \"QQQwea123sd\",\n    \"userRoles\": \"Media Employee\"\n}\n",
+                "form": []
+            }
+        },
+        {
+            "_id": "858114a5-e5d5-453b-abfb-f8f4d1fc0646",
+            "colId": "1d6f0185-edbe-4e33-ab22-b66d921588af",
+            "containerId": "cfc375af-c175-4526-b524-c12c8cc68c49",
+            "name": "AddUserbySP Regular Employee",
+            "url": "http://localhost/ChatSphere/ChatSphere_api/chat-api/adduser",
+            "method": "POST",
+            "sortNum": 80000,
+            "created": "2024-10-03T21:42:41.664Z",
+            "modified": "2024-10-03T21:46:20.556Z",
+            "headers": [
+                {
+                    "name": "Authorization",
+                    "value": "81b8df1ede3d82cded7131157c712dfa4b8958f269d0077061a9fde9bc000050"
+                }
+            ],
+            "body": {
+                "type": "json",
+                "raw": "{\n    \"username\": \"AMJADMUNIR\",\n    \"email\": \"AMJADMUNIR@GMAIL.COM\",\n    \"password\": \"QQQwea123sd\",\n    \"userRoles\": \"Regular Employee\"\n}\n",
+                "form": []
+            }
+        }
+    ],
+    "ref": "GQUV-baSpZuVpYAUZz7GdhrjqUKv1pZI7NJk6CIu4rKMEPuV2oU107sdCOPVyZAy1lox49tzioeCtZj10p0-PQ"
+}

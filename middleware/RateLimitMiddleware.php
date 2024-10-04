@@ -2,11 +2,9 @@
 
 require_once 'utils/ResponseFormatter.php';
 require_once 'utils/Logger.php';
-
 class RateLimitMiddleware {
     private static $rateLimit = 100; // Maximum requests
     private static $timeWindow = 3600; // Time window in seconds (1 hour)
-
     public static function handle() {
         session_start();
         

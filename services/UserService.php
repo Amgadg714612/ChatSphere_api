@@ -4,7 +4,7 @@ require_once 'models/User.php'; // Import the User model
 require_once 'utils/ResponseFormatter.php';
 
 class UserService {
-
+    
     private $userModel;
     public function __construct() {
         $this->userModel = new User(); // Initialize the User model
@@ -20,23 +20,23 @@ class UserService {
                 return false; // Invalid credentials
             }
         } catch (Exception $e) {
-            throw new Exception('Error authenticating user: ' . $e->getMessage());
+            ResponseFormatter::error('Error authenticating user: ',405);
         }
     }
  
     ////////////////////////////////////////////////////////// SignUp//////////////////////////////////////////////
-    // Register a new user
-    public function registerUser($username, $password, $email) {
+    // Register a new user DEVLOPLER
+    public function registerUserDEVLOPLER($username, $email, $password) {
         try {
             // Check if the username or email already exists
             if ($this->userModel->getUserByUsername($username) || $this->userModel->getUserByEmail($email)) {
               echo  ResponseFormatter::success($username,'Username or email already exists.');
             }
-
+  
             // Hash the password before storing it
             $hashedPassword = password_hash($password, PASSWORD_BCRYPT);
             // Create the user
-            $userId = $this->userModel->createUser($username, $hashedPassword, $email);
+            $userId = $this->userModel->createUserDev($username, $email, $hashedPassword);
             return $userId; // Return the ID of the newly created user
         } catch (Exception $e) {
             echo  ResponseFormatter::success($e->getMessage(),'Error registering user: ');
@@ -69,10 +69,55 @@ class UserService {
         }
     }
 
+    public function isRolework($iduser,$Rolesid){
+
+        if(!empty($Rolesid)){
+
+            if($Rolesid==2 ){
+                $idRoles=$this->userModel->getUserRoles($iduser,1); 
+                if($idRoles==1){
+                }                  
+                return  $idRoles ? true:false;
+            }
+            if($Rolesid == 3)
+            {
+            $idRoles=$this->userModel->getUserRoles($iduser,2);  
+            return  $idRoles ? true:false ;
+            }
+            if($Rolesid == 4 || $Rolesid == 5 )
+            {
+            $idRoles=$this->userModel->getUserRoles($iduser,3);  
+            return  $idRoles ? true:false ;
+            }
+        
+                    
+        }
+        else
+        {
+           // LOG LOCTION AND IP ADDRESS 
+         echo   ResponseFormatter::validationError('validation_error ROLES ');
+        }
+        
+
+    }
+    public function getidRolesbynameId($RolesName){
+        $idRoles=$this->userModel->getRoleIdByName($RolesName);
+        if(!empty($idRoles))
+        {
+            return $idRoles;
+        }
+        else 
+        {
+            ResponseFormatter::error('Error fetching  roles not fiend roles: +.' ,1054);
+            exit;
+            return false;
+        }
+        return false;
+
+    }
     ///////////////////////////////////
     public function createUser($data) {
         // Perform additional business logic or 
-       
         $errors = [];
         // Validate the username
         if (empty($data['username']) || !Validator::validateUsername($data['username'])) {
@@ -97,13 +142,21 @@ class UserService {
             Logger::warning('User creation failed due to validation errors: ' . json_encode($errors));
             return false;
         }
+       
+        $idRoles=$data['UserRole'];
+        echo $idRoles;
+        if(empty($idRoles))
+        {
+            Logger::warning('not defined Roles' . json_encode($errors));
+            return false;
+
+        }
         // Additional business logic can be added here
         // Delegate to the User model to perform the actual creation
         try {
-         
-            $userId = $this->userModel->createUser($data['username'],$data['email'],$data['password']);
+            $userId = $this->userModel->createUser($data['username'],$data['email'],$data['password'],$idRoles);
             // Log successful user creation
-            Logger::info('User created successfully with ID: ' . $userId);
+            Logger::info('User created successfully with ID:' . $userId);
             return $userId;
         } catch (Exception $e) {
             // Log the exception
@@ -123,7 +176,7 @@ class UserService {
         try {
             return $this->userModel->getUserByEmail($email);
         } catch (Exception $e) {
-            throw new Exception('Error fetching user details: ' . $e->getMessage());
+            echo ResponseFormatter::error('Error fetching user details: ');
         }
     }
     public function getUserByUserName($username) {

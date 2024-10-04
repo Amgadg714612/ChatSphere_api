@@ -22,7 +22,18 @@ class Validator {
         // Username must be between 3 and 20 characters long and can include letters, numbers, and underscores.
         return preg_match('/^[a-zA-Z0-9_]{3,20}$/', $username);
     }
-
+    public static function validatRoles($userROLES) {
+        // ROLES must be between 1 and 5  VALUES ONLY  can include ('Developer'),General Manager, Specific Manager,Media Employe,Media EmployeeMedia Employee,Regular Employee
+         // تعريف الأدوار المسموح بها
+    $allowedRoles = [
+        'Developer',
+        'General Manager',
+        'Specific Manager',
+        'Media Employee',
+        'Regular Employee'
+    ];
+    return in_array($userROLES, $allowedRoles);
+    }
     /**
      * Validate password.
      * 

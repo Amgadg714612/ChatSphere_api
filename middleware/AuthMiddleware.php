@@ -48,6 +48,29 @@ class AuthMiddleware {
             exit();
         }
     }
+    public static function checkRolePermissions($requiredRole, $userId) {
+        $userRole = $_SESSION['role'];
+        if ($requiredRole === 'مطور' && $userRole === 'مطور') {
+            return true;
+        }
+
+        if ($requiredRole === 'مدير عام' && $userRole === 'مدير عام') {
+            return true;
+        }
+
+        if ($requiredRole === 'مدير خاص' && $userRole === 'مدير خاص') {
+            return true;
+        }
+
+        if ($requiredRole === 'إعلامي' && $userRole === 'إعلامي') {
+            return true;
+        }
+
+        if ($requiredRole === 'موظف' && $userRole === 'موظف') {
+            return true;
+        }
+
+        return false; }
 
     /**
      * Get user ID from the token.
@@ -56,8 +79,9 @@ class AuthMiddleware {
      * @return int|null The user ID or null if not found.
      */
     private static function getUserIdFromToken($token) {
-        $tokenService = new TokenService(); // إنشاء كائن لخدمة التوكن
+        $tokenService = new TokenService();
         return $tokenService->getUserIdFromToken($token);
     }
+   
 }
 ?>

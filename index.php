@@ -1,4 +1,5 @@
 
+
 <?php
 require_once 'config/config.php';
 require_once 'controllers/UserController.php';
@@ -6,92 +7,100 @@ require_once 'controllers/GroupController.php';
 require_once 'controllers/MessageController.php';
 require_once 'controllers/ConversationController.php';
 require_once 'controllers/GroupMessageController.php';
+require_once 'utils/ResponseFormatter.php';
 // # OF ERROR 403  // Unauthorized 
 //  # OF  ERROR 401 Token is required 
 // # OF ERROR  405  Method Not Allowed 
 // # of error  404 objects not found 
 // # of error 500 Internal Server Error
+// # of error  533  not roles  your  
 // Handle the incoming request
 $requestMethod = $_SERVER['REQUEST_METHOD'];
 $requestEndpoint = $_SERVER['REQUEST_URI'];
 // Remove any query parameters from the endpoint
 //  $requestEndpoint = trim(strtok($_SERVER['REQUEST_URI'], '?'), '/');
- $requestEndpoint = strtok($requestEndpoint, '?');
+$requestEndpoint = strtok($requestEndpoint, '?');
 // Dispatch the request to the appropriate controller
 switch ($requestEndpoint) {
-case '/ChatSphere/ChatSphere_api/chat-api/login':
-            handleLoginRequest($requestMethod);
+    case '/ChatSphere/ChatSphere_api/chat-api/login':
+        handleLoginRequest($requestMethod);
+        break;
+    case '/ChatSphere/ChatSphere_api/chat-api/adduser': // New endpoint for signup
+        handleAdduserRequest($requestMethod);
+        break;
+        case '/ChatSphere/ChatSphere_api/chat-api/ADuseDEV': // New endpoint for signup
+            handleADuseDEVRequest($requestMethod);
             break;
-     case '/ChatSphere/ChatSphere_api/chat-api/signup': // New endpoint for signup
-                handleSignupRequest($requestMethod);
-                break;
 
     case '/ChatSphere/ChatSphere_api/chat-api/users':
         // token  ----------->->->>
         handleUserRequest($requestMethod);
         break;
     case '/ChatSphere/ChatSphere_api/chat-api/groups':
-                // token  ----------->->->>
+        // token  ----------->->->>
 
         handleGroupRequest($requestMethod);
         break;
-        case '/ChatSphere/ChatSphere_api/chat-api/groupsMessage':
-            // token  ----------->->->>
+    case '/ChatSphere/ChatSphere_api/chat-api/groupsMessage':
+        // token  ----------->->->>
 
-    handleMessageRequesttogroup($requestMethod)
-;    break;
+        handleMessageRequesttogroup($requestMethod);
+        break;
     case '/ChatSphere/ChatSphere_api/chat-api/messages':
-                // token  ----------->->->>
+        // token  ----------->->->>
         handleMessageRequest($requestMethod);
         break;
     case '/ChatSphere/ChatSphere_api/chat-api/conversations':
-                // token  ----------->->->>
+        // token  ----------->->->>
         handleConversationRequest($requestMethod);
         break;
-    
+
     default:
         // Handle invalid or unsupported endpoint
-        http_response_code(404);
-        echo json_encode(['error' => 'Endpoint not found main ']);
+        echo ResponseFormatter::error("Endpoint not found main", 404);
         break;
 }
 
 // Handle user requests
-function handleUserRequest($method) {
+function handleUserRequest($method)
+{
     $controller = new UserController();
-   $controller->handleRequest($method);
+    $controller->handleRequest($method);
 }
 
 // Handle group requests
-function handleGroupRequest($method) {
-      // الحصول على التوكن من الهيدر Authorization
-      $authHeader = $_SERVER['HTTP_AUTHORIZATION'] ?? null;
-      if (!$authHeader) {
-        echo ResponseFormatter::error('Token is required',401);
-          exit;
-      }
-      // تحقق من التوكن واستخرج userId
-      $tokenService = new TokenService();
-      $userId = $tokenService->getUserIdFromToken($authHeader);
-      if ($userId === null) {
-        echo ResponseFormatter::error('Invalid token NOT END',403);
-          exit;
-      }
-  
-      // إعداد المعاملات
-      $params = [];
-      if (isset($_GET['id'])) {
-          $params['id'] = (int)$_GET['id']; // تأكد من أن ID هو عدد صحيح
-      }
-      // تهيئة خدمات المجموعات
-      $groupService = new GroupService(new Group()); // تأكد من تهيئة الخدمة بشكل صحيح
-      $groupController = new GroupController($groupService);
-      $data = json_decode(file_get_contents('php://input'), true);
-      $groupController->handleRequest($method, $params, $userId);
+function handleGroupRequest($method)
+{
+    // الحصول على التوكن من الهيدر Authorization
+    $authHeader = $_SERVER['HTTP_AUTHORIZATION'] ?? null;
+    if (!$authHeader) {
+        echo ResponseFormatter::error('Token is required', 401);
+        exit;
+    }
+
+    // تحقق من التوكن واستخرج userId
+    $tokenService = new TokenService();
+    $userId = $tokenService->getUserIdFromToken($authHeader);
+    if ($userId === null) {
+        echo ResponseFormatter::error('Invalid token NOT END', 403);
+        exit;
+    }
+
+    // إعداد المعاملات
+    $params = [];
+    if (isset($_GET['id'])) {
+        $params['id'] = (int)$_GET['id']; // تأكد من أن ID هو عدد صحيح
+    }
+    // تهيئة خدمات المجموعات
+    $groupService = new GroupService(new Group()); // تأكد من تهيئة الخدمة بشكل صحيح
+    $groupController = new GroupController($groupService);
+    $data = json_decode(file_get_contents('php://input'), true);
+    $groupController->handleRequest($method, $params, $userId);
 }
 
 // Handle message requests
-function handleMessageRequest($method) {
+function handleMessageRequest($method)
+{
     $params = [];
     if (isset($_GET['conversationId'])) {
         $params['conversationId'] = (int)$_GET['conversationId']; // Ensure ID is an integer
@@ -105,7 +114,8 @@ function handleMessageRequest($method) {
 }
 
 // Handle message requests
-function handleMessageRequesttogroup($method) {
+function handleMessageRequesttogroup($method)
+{
     $authHeader = $_SERVER['HTTP_AUTHORIZATION'] ?? null;
     if (!$authHeader) {
         echo ResponseFormatter::error('Token is required', 401);
@@ -125,7 +135,7 @@ function handleMessageRequesttogroup($method) {
     if (isset($_GET['messageId'])) {
         $params['messageId'] = (int)$_GET['messageId']; // تأكد من أن messageId هو عدد صحيح
     }
-    $pdo = require 'config/config.php'; 
+    $pdo = require 'config/config.php';
     $messageModel = new GroupMessageModel($pdo);
     $messageService = new GroupMessageService($messageModel);
     $messageController = new GroupMessageController($messageService);
@@ -133,7 +143,8 @@ function handleMessageRequesttogroup($method) {
     $messageController->handleRequest($method, $params, $userId);
 }
 // Handle conversation requests
-function handleConversationRequest($method) {
+function handleConversationRequest($method)
+{
     $params = [];
     if (isset($_GET['id'])) {
         $params['id'] = (int)$_GET['id']; // Ensure ID is an integer
@@ -146,7 +157,8 @@ function handleConversationRequest($method) {
 
     $conversationController->handleRequest($method, $params);
 }
-function handleLoginRequest($method) {
+function handleLoginRequest($method)
+{
     if ($method === 'POST') {
         $data = json_decode(file_get_contents('php://input'), true);
         if (isset($data['email']) && isset($data['password'])) {
@@ -156,31 +168,83 @@ function handleLoginRequest($method) {
             $response = $userController->login($email, $password);
             echo $response;
         } else {
-            echo ResponseFormatter::error('Username  or email , password required ',400);
-             
+            echo ResponseFormatter::error('Username  or email , password required ', 400);
         }
     } else {
-        http_response_code(405);
-        echo json_encode(['error' => 'Method Not Allowed']);
+        echo ResponseFormatter::error('Method Not Allowed', 405);
     }
 }
-// Handle signup requests
-function handleSignupRequest($method) {
+function gettokenfromfrant()
+{
+    $authHeader = $_SERVER['HTTP_AUTHORIZATION'] ?? null;
+    if (!$authHeader) {
+        echo ResponseFormatter::error('Token is required', 401);
+        exit;
+    }
+    return  $authHeader ? $authHeader : null;
+}
+
+function handleADuseDEVRequest($method)
+{
     if ($method === 'POST') {
         $data = json_decode(file_get_contents('php://input'), true);
-        if (isset($data['username']) && isset($data['email']) && isset($data['password'])) {
-            $username = $data['username'];
-            $email = $data['email'];
-            $password = $data['password'];
-            $userController = new UserController();
-            $response = $userController->signup($username, $email, $password);
-            echo $response;
+        if (isset($data['username']) && isset($data['email']) && isset($data['password']) ) {   
+                $username = $data['username'];
+                $email = $data['email'];
+                $password = $data['password'];
+                $userController = new UserController();
+                $response = $userController->createUserDev();
+                echo $response;
+
         } else {
-        
+
             echo ResponseFormatter::error('Username, email, and password required', 400);
         }
     } else {
-      ;
+
         echo ResponseFormatter::error('Method Not Allowed', 405);
     }
+}
+
+
+// Handle signup requests
+function handleAdduserRequest($method)
+{
+    $token =gettokenfromfrant();
+    if(!empty($token)){
+   
+        // if ($userId === null) {
+        //     echo ResponseFormatter::error('Invalid token', 403);
+        //     exit;
+        // }
+        // else{
+            if ($method === 'POST') {
+                $data = json_decode(file_get_contents('php://input'), true);
+                if (isset($data['username']) && isset($data['email']) && isset($data['password']) and  isset($data['userRoles'])) {
+                        $username = $data['username'];
+                        $email = $data['email'];
+                        $password = $data['password'];
+                        $userRoles = $data['userRoles'];
+                        $userController = new UserController();
+                        $response = $userController->adduser($username, $email, $password, $userRoles, $token);
+                        echo $response;
+                   
+                } else {
+        
+                    echo ResponseFormatter::error('Username, email, and password required', 400);
+                }
+             } 
+            else {
+        
+                echo ResponseFormatter::error('Method Not Allowed', 405);
+             }
+       // }
+    
+       
+    }
+    else{
+        echo ResponseFormatter::error('Invalid token', 403);
+        exit;
+    }
+    
 }
