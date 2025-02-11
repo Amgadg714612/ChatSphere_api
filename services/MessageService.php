@@ -22,8 +22,6 @@ class MessageService {
      // Send a new message
      public function sendMessageoneTOone($receiver_id,$senderId, $messageContent) {
         try {
-            
-            
             // Create the message
             $messageId = $this->messageModel->createMessageoneTone($senderId,$receiver_id, $messageContent);
             return $messageId; // Return the ID of the newly created message
@@ -45,7 +43,6 @@ class MessageService {
             throw new Exception('Error fetching messages: ' . $e->getMessage());
         }
     }
-
     // Update a message
     public function updateMessage($messageId, $newContent) {
         try {

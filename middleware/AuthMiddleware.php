@@ -16,11 +16,14 @@ class AuthMiddleware {
         if ($authHeader) {
             // استخراج التوكن من رأس الطلب
             $token = str_replace('Bearer ', '', $authHeader);
-            $tokenService = new TokenService(); // إنشاء كائن لخدمة التوكن
+            $tokenService = new TokenService();
+            $userService=new UserService(); // إنشاء كائن لخدمة التوكن
             // تحقق من التوكن في قاعدة البيانات
             if ($tokenService->validateToken($token)) {
                 // يمكنك هنا إعداد الجلسة للمستخدم إذا لزم الأمر
-                $_SESSION['user_id'] = self::getUserIdFromToken($token); // إعداد معرف المستخدم في الجلسة
+                $idUser=self::getUserIdFromToken($token);
+                $_SESSION['user_id'] =  $idUser; // إعداد معرف المستخدم في الجلسة
+                $_SESSION['role']= $userService->getidRolesbyId($idUser);
                 return true; // التوكن صحيح
             }
         }
@@ -48,29 +51,6 @@ class AuthMiddleware {
             exit();
         }
     }
-    public static function checkRolePermissions($requiredRole, $userId) {
-        $userRole = $_SESSION['role'];
-        if ($requiredRole === 'مطور' && $userRole === 'مطور') {
-            return true;
-        }
-
-        if ($requiredRole === 'مدير عام' && $userRole === 'مدير عام') {
-            return true;
-        }
-
-        if ($requiredRole === 'مدير خاص' && $userRole === 'مدير خاص') {
-            return true;
-        }
-
-        if ($requiredRole === 'إعلامي' && $userRole === 'إعلامي') {
-            return true;
-        }
-
-        if ($requiredRole === 'موظف' && $userRole === 'موظف') {
-            return true;
-        }
-
-        return false; }
 
     /**
      * Get user ID from the token.
@@ -78,6 +58,21 @@ class AuthMiddleware {
      * @param string $token
      * @return int|null The user ID or null if not found.
      */
+
+      public static function  authorizeMediaEmployee()
+      {
+        self::authenticate();
+        if($_SESSION['role']!=='Media Employee')
+        {
+            Logger::error('forbidden access attempt  by  user '.$_SESSION['user_id'] );
+            echo ResponseFormatter::error('forvidden',404);
+            exit ();
+        }
+        else 
+          
+        return 1;
+      }
+
     private static function getUserIdFromToken($token) {
         $tokenService = new TokenService();
         return $tokenService->getUserIdFromToken($token);

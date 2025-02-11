@@ -94,7 +94,40 @@ class User
         $idi=$result['id'];
         return  $idi;
     }
+    ///
+    ////
+    ////
+    ////
 
+    public function getRoleIdByUserId($RoleUserId)
+    {
+        $query = "SELECT role_id FROM users WHERE id = :idUser";
+        $stmt = $this->pdo->prepare($query);
+        $stmt->execute(['idUser' => $RoleUserId]);
+        $result=0;
+        $result = $stmt->fetch(PDO::FETCH_ASSOC);
+        if($result === 0){
+            echo ResponseFormatter::error(" no is  getRoleIdByUserId");
+            exit;
+        }
+        $nameRoleUser=self::getRoleIdByid($result['id']);   
+        return  $$nameRoleUser;
+    }
+    public function getRoleIdByid($idRow)
+    {
+        $query = "SELECT role_name FROM roles WHERE id = :id";
+        $stmt = $this->pdo->prepare($query);
+        $stmt->execute(['id' => $idRow]);
+        $result=0;
+        $result = $stmt->fetch(PDO::FETCH_ASSOC);
+        if($result === 0){
+            echo ResponseFormatter::error(" ROLES EMPTY    ");
+            exit;
+        }
+
+        $nameRole=$result['role_name'];
+        return  $nameRole;
+    }
     // Create a new user
     public function createUser($username, $email, $password, $idRole)
     {

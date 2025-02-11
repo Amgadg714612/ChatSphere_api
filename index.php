@@ -1,6 +1,5 @@
-
-
 <?php
+
 require_once 'config/config.php';
 require_once 'controllers/UserController.php';
 require_once 'controllers/GroupController.php';
@@ -25,6 +24,9 @@ switch ($requestEndpoint) {
     case '/ChatSphere/ChatSphere_api/chat-api/login':
         handleLoginRequest($requestMethod);
         break;
+        case '/ChatSphere/ChatSphere_api/chat-api/addAnnoun':
+            handleAddMediaRequest($requestMethod);
+            break;
     case '/ChatSphere/ChatSphere_api/chat-api/adduser': // New endpoint for signup
         handleAdduserRequest($requestMethod);
         break;
@@ -157,6 +159,25 @@ function handleConversationRequest($method)
 
     $conversationController->handleRequest($method, $params);
 }
+function  handleAddMediaRequest($method)
+{
+    if ($method === 'POST') {
+        $data = json_decode(file_get_contents('php://input'), true);
+        if (isset($data['email']) && isset($data['password'])) {
+            $email = $data['email'];
+            $password = $data['password'];
+            $userController = new UserController();
+            $response = $userController->login($email, $password);
+            echo $response;
+        } else {
+            echo ResponseFormatter::error('Username  or email , password required ', 400);
+        }
+    } else {
+        echo ResponseFormatter::error('Method Not Allowed', 405);
+    }
+}
+
+
 function handleLoginRequest($method)
 {
     if ($method === 'POST') {

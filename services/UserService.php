@@ -115,6 +115,21 @@ class UserService {
         return false;
 
     }
+    public function getidRolesbyId($RolesiUser){
+        $nameRole=$this->userModel->getRoleIdByUserId($RolesiUser);
+        if(!empty($nameRole))
+        {
+            return $nameRole;
+        }
+        else 
+        {
+            ResponseFormatter::error('Error fetching  roles not fiend roles: +.' ,1054);
+            exit;
+            return false;
+        }
+        return $nameRole;
+
+    }
     ///////////////////////////////////
     public function createUser($data) {
         // Perform additional business logic or 

@@ -20,9 +20,6 @@ class GroupService {
             throw new Exception('Error creating group: ' . $e->getMessage());
         }
     }
-    
-
-
     // Retrieve group details by ID
     public function getGroupById($groupId) {
         try {
@@ -40,7 +37,6 @@ class GroupService {
             throw new Exception('Error fetching groups: ' . $e->getMessage());
         }
     }
-
     // Update group details
     public function updateGroup($groupId, $name, $description) {
         try {
@@ -50,7 +46,6 @@ class GroupService {
             throw new Exception('Error updating group: ' . $e->getMessage());
         }
     }
-
     // Delete a group
     public function deleteGroup($groupId) {
         try {
