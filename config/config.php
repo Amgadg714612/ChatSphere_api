@@ -1,9 +1,6 @@
 <?php
 require_once 'utils/Logger.php';
 require_once 'utils/ResponseFormatter.php';
-// $servername =  "https://alwahash.online" ;//"https://alwahash.online
-// $username = "u940853030_adam11";
-// $password = "_4263AdamDB_";
 // بيانات الاتصال بقاعدة البيانات
 $host = '127.0.0.1'; // أو عنوان الخادم الخاص بقاعدة البيانات
 $user = 'root';      // اسم المستخدم لقاعدة البيانات
